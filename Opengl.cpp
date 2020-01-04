@@ -69,21 +69,21 @@ void OpenGL::Render()
 	setTexture(name, shader);
     initCamera(shader);
     glViewport(0,0, screenWidth, screenHeight);
-   // glEnable(GL_DEPTH_TEST);
-    //glUniform3f(glGetUniformLocation(shader, "lightcolor"), 0.3f,0.3f,0.3f);
-    //glUniform3f(glGetUniformLocation(shader, "lightPos"), 0.0f,0.0f,0.0f);
-    //Shader::setVec3("lightcolor",vec3(0.3f,0.3f,0.3f));
-    //Ambient reflectence coefficient = ( 0 . 2 5 , 0. 2 5 , 0. 2 5 , 1 . 0 )
-    //Ambient light color = ( 0 . 3 , 0 . 3 , 0 . 3 , 1 . 0 )
-    //Specular reflectence coefficient = ( 1 . 0 , 1 . 0 , 1 . 0 , 1 . 0 )
-    //Specular light color = ( 1 . 0 , 1 . 0 , 1 . 0 , 1 . 0 )
-   // Specular exponent = 100
-   // Diffuse reflectence coefficient = ( 1 . 0 , 1 . 0 , 1 . 0 , 1 . 0 )
-   // Diffuse light color = ( 1 . 0 , 1 . 0 , 1 . 0 , 1 . 0 )
+
+    GLint lightPosition = glGetUniformLocation(shader, "lightPosition");
+    glUniform3f(lightPosition, imageWidth/2,100,imageHeight/2);
+    GLint camPosition = glGetUniformLocation(shader, "cameraPosition");
+    glUniform3fv(camPosition,1,&cameraPosition[0]);
+
+    glEnable(GL_DEPTH_TEST);
 	do {
 
-		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+        glClearStencil(0);
+        glClearDepth(1.0f);
+        glClearColor(0.5, 0.2, 0.3, 1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        initCamera(shader);
+
 		// bind Texture
 		glBindTexture(GL_TEXTURE_2D, texture);
 		// render container
@@ -223,8 +223,7 @@ void OpenGL::initCamera(GLuint shaderID) {
     GLint loc_normal = glGetUniformLocation(shaderID, "NormalMatrix");
     glUniformMatrix4fv(loc_normal, 1, GL_FALSE, &M_normal[0][0]);
 
-    GLint lightPosition = glGetUniformLocation(shaderID, "lightPosition");
-    glUniform3f(lightPosition, imageWidth/2,100,imageHeight/2);
+
 
     //GLint loc_camera_pos = glGetUniformLocation(shaderID, "cameraPosition");
    // glUniform3fv(loc_camera_pos, 1, &cameraPosition[0]);

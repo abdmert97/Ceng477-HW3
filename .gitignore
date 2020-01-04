@@ -1,0 +1,11 @@
+*.cmake
+*.cbp
+*.make
+*.obj
+*.exe
+*.bin
+*.pdb
+*.rc
+*.internal
+*.includecache
+*.lib

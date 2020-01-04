@@ -1,8 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2019.3.2\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" "C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3"
--- Could NOT find Vulkan (missing: VULKAN_LIBRARY VULKAN_INCLUDE_DIR) 
--- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) 
--- Using Win32 for window creation
--- GLM is a header only library, no need to build it. Set the option GLM_TEST_ENABLE with ON to build and run the test bench
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug

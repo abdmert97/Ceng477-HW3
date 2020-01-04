@@ -9,3 +9,6 @@
 *.internal
 *.includecache
 *.lib
+*.txt
+*.log
+*.ilk

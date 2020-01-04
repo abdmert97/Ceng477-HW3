@@ -18,8 +18,8 @@ public:
 	 unsigned int texture;
 	 unsigned int VAO;
 	 unsigned int VBO, EBO;
-	 unsigned int imageHeight;
-	 unsigned int imageWidth;
+	  int imageHeight;
+	  int imageWidth;
 
 	 glm::vec3 cameraPosition;
 	 GLFWwindow* openWindow(const char* windowName, int width, int height);

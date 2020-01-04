@@ -19,19 +19,29 @@ GLFWwindow* window;
 void OpenGL::Render()
 {
     // Open window
-	window = openWindow(windowName, screenWidth, screenHeight);
+	window = openWindow(windowName, 1920, 1080);
 
 	// Create and compile our GLSL program from the shaders
 	GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
 	// Set Vertices
-	float vertices[] = {
-		// positions          // normal           // texture coords
-         0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 0.0f, // bottom right
-         -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f, // bottom left
-         -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   0.0f, 1.0f  // top left
-	};
+	float vertices2[] = {
+            // positions          // normal           // texture coords
+            0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   0.0f, 1.0f  // top left
+    };
+    float vertices[] = {
+            1,  0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 1.0f, // top right
+            1, -0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f, // bottom right
+
+            -1,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   1.0f, 1.0f , // top left
+
+            1, -0.5f, 0.0f,   0.0f, 0.0f, 0.0f,   0.0f, 0.0f, // bottom right
+            -1, -0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   1.0f, 0.0f, // bottom left
+            -1,  0.5f, 0.0f,  0.0f, 0.0f, 0.0f,   1.0f, 1.0f  // top left
+    };
 
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -45,6 +55,8 @@ void OpenGL::Render()
     setNormal(vertices,1,normal1);
     setNormal(vertices,2,normal1);
     setNormal(vertices,3,normal1);
+    setNormal(vertices,4,normal1);
+    setNormal(vertices,5,normal1);
 
 
     // Configure Buffers
@@ -94,7 +106,7 @@ void OpenGL::Render()
 		// render container
 		glUseProgram(shader);
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES,6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
@@ -208,16 +220,15 @@ glm::vec3  OpenGL::calculateNormal(glm::vec3 v1,glm::vec3 v2, glm::vec3 v3)
 void OpenGL::initCamera(GLuint shaderID) {
     glm::vec3 gaze = glm::vec3(0,0,1);
     glm::vec3 cameraUp = glm::vec3(0, 1, 0);
-    cameraPosition = glm::vec3(imageWidth/2,imageWidth/10,-imageWidth/4);
-
+    cameraPosition = glm::vec3(0,0,-2);
     float projectionAngle = 45;
     float aspectRatio = 1;
     float near = 0.1;
     float far = 1000;
 
-    glm::vec3 center = cameraPosition + gaze * near;
+    glm::vec3 center = glm::vec3(0,0,5);
 
-    glm::mat4 M_projection = glm::perspective(projectionAngle, aspectRatio, near, far);
+    glm::mat4 M_projection = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
     glm::mat4 M_view = glm::lookAt(cameraPosition, center, cameraUp);
     glm::mat4 M_model = glm::mat4(1.0f);
 
@@ -243,7 +254,7 @@ void OpenGL::initCamera(GLuint shaderID) {
     GLint camPosition = glGetUniformLocation(shaderID, "cameraPosition");
     glUniform3fv(camPosition,1,&cameraPosition[0]);
 
-    glm::vec3 lightPos = glm::vec3(imageWidth/2,imageWidth/10,-imageWidth/4);
+    glm::vec3 lightPos = glm::vec3(imageWidth/2,100,imageHeight/2);
 
     GLint lightPosition = glGetUniformLocation(shaderID, "lightPosition");
     glUniform3fv(lightPosition, 1, &lightPos[0]);

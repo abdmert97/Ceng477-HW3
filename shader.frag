@@ -15,7 +15,7 @@ uniform sampler2D Tex;
 out vec4 FragColor;
 
 
-vec3 lightColor = vec3(1.0, 0.3, 0.3);
+vec3 lightColor = vec3(0.3, 0.3, 0.3);
 vec3 ambientReflectence = vec3(0.25f, 0.25f, 0.25f);
 vec3 ambientColor = vec3(0.3f, 0.3f, 0.3f);
 vec3 specularReflectence= vec3(1.0f, 1.0f, 1.0f);
@@ -84,6 +84,6 @@ void main()
     vec4 texColor = texture(Tex, data.TexCoord);
     vec4 color = vec4(ambientSum + diffuseSum, 1) * texColor + vec4(specSum, 1);
     color = vec4(clamp(color.xyz, 0.0, 1.0), 1);
-    color = texColor;
+
     FragColor = color;
 }

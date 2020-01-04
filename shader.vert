@@ -33,5 +33,6 @@ void main()
     CameraVector = normalize(vec3(ViewMatrix * vec4(cameraPosition - data.Position, 0)));
     LightVector = normalize(vec3(ViewMatrix * vec4(lightPosition - data.Position, 0)));
 
-    gl_Position = ProjectionMatrix * vec4(VertexPosition, 1);
+
+    gl_Position = MVP* vec4(VertexPosition, 1);
 }

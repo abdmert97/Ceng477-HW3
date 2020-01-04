@@ -1,8 +1,14 @@
 // Include GLM
 
-#include "OpenGLHelper.h"
 #include <vector>
+#include <GL/glew.h>
+#include <iostream>
 #include "OpenGL.h"
+#include "Shader.hpp"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 using  namespace  glm;
 using namespace std;
 
@@ -15,7 +21,7 @@ void OpenGL::Render()
 	const char* windowName = "Ceng477";
 	window = openWindow(windowName, 1920, 1080);
 	// Create and compile our GLSL program from the shaders
-	GLuint shader = LoadShaders("VertexShader.vertexshader", "FragmentShader.fragmentshader");
+	GLuint shader = LoadShaders("../VertexShader.vertexshader", "../FragmentShader.fragmentshader");
 
 
 	float vertices[] = {
@@ -58,7 +64,7 @@ void OpenGL::Render()
 	int* height= new int();
 	*width = 640;
 	*height = 320;
-	const char* name = "normal_earth_mini.jpg";
+	const char* name = "../normal_earth_mini.jpg";
 	setTexture(name, width, height, shader);
 	cout << "width " << *width << " height " << *height << endl;
 	do {

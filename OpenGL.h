@@ -1,8 +1,10 @@
 #ifndef OPENGL_H
 #define OPENGL_H
-#include "OpenGLHelper.h"
 #include <vector>
-using  namespace  glm;
+#include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
+
+using  namespace glm;
 using namespace std;
 
 

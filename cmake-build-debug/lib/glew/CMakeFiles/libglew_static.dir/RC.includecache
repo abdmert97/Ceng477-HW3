@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/build/glew.rc
+windows.h
+-
+

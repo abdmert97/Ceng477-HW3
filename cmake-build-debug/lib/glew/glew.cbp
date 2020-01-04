@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="glew"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="msvc8"/>
+		<Option virtualFolders="CMake Files\;CMake Files\lib\;CMake Files\lib\glfw\;CMake Files\lib\glfw\CMake\;CMake Files\lib\glfw\CMake\modules\;CMake Files\lib\glfw\src\;CMake Files\lib\glfw\examples\;CMake Files\lib\glfw\tests\;CMake Files\lib\glew\;CMake Files\lib\glm\;CMake Files\lib\glm\cmake\;CMake Files\lib\glm\glm\;CMake Files\lib\glm\test\;CMake Files\lib\glm\test\bug\;CMake Files\lib\glm\test\core\;CMake Files\lib\glm\test\gtc\;CMake Files\lib\glm\test\gtx\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 all"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglewmx_shared">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/bin/glewmxd.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglewmx_shared"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglewmx_shared/fast">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/bin/glewmxd.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglewmx_shared/fast"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglew_static">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glewd.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglew_static"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglew_static/fast">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glewd.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglew_static/fast"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglew_shared">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/bin/glewd.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglew_shared"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglew_shared/fast">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/bin/glewd.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglew_shared/fast"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglewmx_static">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glewmxd.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglewmx_static"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="libglewmx_static/fast">
+				<Option output="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glewmxd.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/cmake-build-debug/lib/glew"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DGLEW_STATIC"/>
+					<Add option="-DWIN32_MEAN_AND_LEAN"/>
+					<Add option="-DVC_EXTRALEAN"/>
+					<Add option="-DGLEW_BUILD"/>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add option="-DGLEW_NO_GLU"/>
+					<Add directory="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 libglewmx_static/fast"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\selim\Desktop\Fall 2019-2020\ceng477\hw3\Ceng477-HW3\cmake-build-debug\lib\glew\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/build/glew.rc">
+			<Option target="libglewmx_shared"/>
+			<Option target="libglew_static"/>
+			<Option target="libglew_shared"/>
+			<Option target="libglewmx_static"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/src/glew.c">
+			<Option target="libglewmx_shared"/>
+			<Option target="libglew_static"/>
+			<Option target="libglew_shared"/>
+			<Option target="libglewmx_static"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glfw\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\lib\glfw\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/CMake/modules/FindVulkan.cmake">
+			<Option virtualFolder="CMake Files\lib\glfw\CMake\modules\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glfw\src\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/src/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\lib\glfw\src\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/src/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\lib\glfw\src\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/src/glfw_config.h.in">
+			<Option virtualFolder="CMake Files\lib\glfw\src\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glfw\examples\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glfw/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glfw\tests\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glew/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glew\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/cmake/CMakePackageConfigHelpers.cmake">
+			<Option virtualFolder="CMake Files\lib\glm\cmake\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/cmake/GNUInstallDirs.cmake">
+			<Option virtualFolder="CMake Files\lib\glm\cmake\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/cmake/glm.pc.in">
+			<Option virtualFolder="CMake Files\lib\glm\cmake\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/cmake/glmBuildConfig.cmake.in">
+			<Option virtualFolder="CMake Files\lib\glm\cmake\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/cmake/glmConfig.cmake.in">
+			<Option virtualFolder="CMake Files\lib\glm\cmake\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/glm/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\glm\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\test\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/test/bug/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\test\bug\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/test/core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\test\core\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/test/gtc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\test\gtc\"/>
+		</Unit>
+		<Unit filename="C:/Users/selim/Desktop/Fall 2019-2020/ceng477/hw3/Ceng477-HW3/lib/glm/test/gtx/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\lib\glm\test\gtx\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

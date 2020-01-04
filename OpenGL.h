@@ -10,6 +10,10 @@ using namespace std;
 
 class OpenGL
 {
+private:
+    const char* windowName = "Ceng477";
+    int screenHeight = 1000;
+    int screenWidth = 1000;
 public:
 	 unsigned int texture;
 	 unsigned int VAO;

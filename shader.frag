@@ -15,14 +15,13 @@ uniform sampler2D Tex;
 out vec4 FragColor;
 
 
-vec3 lightColor = vec3(0.3, 0.3, 0.3);
-vec3 ambientReflectence = vec3(0.25f, 0.25f, 0.25f);
-vec3 ambientColor = vec3(0.3f, 0.3f, 0.3f);
-vec3 specularReflectence= vec3(1.0f, 1.0f, 1.0f);
-vec3 specularColor = vec3 (1.0f, 1.0f, 1.0f);
-vec3 diffuseReflectence= vec3(1.0f, 1.0f, 1.0);
-vec3 diffuseColor =vec3(1.0f, 1.0f, 1.0f);
+vec3 ambientReflectenceCoefficient = vec3(0.25f, 0.25f, 0.25f);
+vec3 ambientLightColor = vec3(0.3f, 0.3f, 0.3f);
+vec3 specularReflectenceCoefficient= vec3(1.0f, 1.0f, 1.0f);
+vec3 specularLightColor = vec3 (1.0f, 1.0f, 1.0f);
 float SpecularExponent = 100;
+vec3 diffuseReflectenceCoefficient= vec3(1.0f, 1.0f, 1.0);
+vec3 diffuseLightColor =vec3(1.0f, 1.0f, 1.0f);
 
 
 
@@ -44,11 +43,11 @@ void light(int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3 
 
 
     // compute ambient component
-    ambient = ambientColor * ambientReflectence;
+    ambient = ambientLightColor * ambientReflectenceCoefficient;
     // compute diffuse component
-    diffuse = diffuseColor * diffuseReflectence * cos_theta;
+    diffuse = diffuseLightColor * diffuseReflectenceCoefficient * cos_theta;
     // compute specular component
-    spec = specularColor * specularReflectence * pow(cos_alpha, SpecularExponent);
+    spec = specularLightColor * specularReflectenceCoefficient * pow(cos_alpha, SpecularExponent);
 
 
 }

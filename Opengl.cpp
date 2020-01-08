@@ -21,6 +21,8 @@ struct vertex {
     glm::vec3 normal;
     glm::vec2 texture;
 
+    vertex() {}
+
     vertex(const glm::vec3 &position, const glm::vec3 &normal, const glm::vec2 &texture) : position(position),
                                                                                            normal(normal),
                                                                                            texture(texture) {}
@@ -31,8 +33,10 @@ struct triangle {
     int vertex2;
     int vertex3;
 
+    triangle() {}
+
     triangle(const int &vertex1, const int &vertex2, const int &vertex3) : vertex1(vertex1), vertex2(vertex2),
-                                                                                    vertex3(vertex3) {}
+                                                                           vertex3(vertex3) {}
 };
 
 void OpenGL::Render() {
@@ -43,7 +47,7 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *name = "../normal_earth_med.jpg";
+    const char *name = "../normal_earth_mini.jpg";
     setTexture(name, shader);
 
     // Set Vertices
@@ -66,17 +70,15 @@ void OpenGL::Render() {
             -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f  // top left
     };*/
     cout << "123" << endl;
-    vector<vertex> vertices;
-    vector<triangle> indices;
+    vector<vertex> vertices(imageWidth * imageHeight);
+    vector<triangle> indices(imageWidth * imageHeight * 2);
     for (int i = 0; i < imageHeight; i++) {
+        cout << i << endl;
         for (int j = 0; j < imageWidth; j++) {
             //start from left bottom  = 0,0,0
-            glm::vec3 position = glm::vec3(j, 0, i);
-            glm::vec3 normal = glm::vec3(0, 0, 0);
-            glm::vec2 texture = glm::vec2((float) j / imageWidth, (float) i / imageHeight);
-
-            vertices.push_back(vertex(position, normal, texture));
-
+            vertices[i*imageWidth + j].position = glm::vec3(j, 0, i);
+            vertices[i*imageWidth + j].normal = glm::vec3(0, 0, 0);
+            vertices[i*imageWidth + j].texture = glm::vec2((float) j / imageWidth, (float) i / imageHeight);
         }
     }
     /* unsigned int indices[] = {
@@ -87,21 +89,21 @@ void OpenGL::Render() {
  */
     //TODO: en sağdakinin bir sağı kayıyor olabilir
     cout << (imageWidth) * (imageHeight) << endl;
-    cout<< indices.max_size()<<endl;
-    for(int i = 0; i < imageHeight - 1; i++){
-        cout<<i<<endl;
-        for(int j = 0; j < imageWidth; j++){
-            if(i == 2076)
-                cout<<"--"<<j<<endl;
-            int vertex1 = i * imageWidth + j;
-            int vertex2 = i * imageWidth + j + 1;
-            int vertex3 = i * imageWidth + imageWidth + j;
-            triangle triangle1 = triangle(vertex1, vertex2, vertex3);
-            indices.push_back(triangle1);
+    int a = 0;
+    for (int i = 0; i < imageHeight - 1; i++) {
+        cout << i << endl;
+        for (int j = 0; j < imageWidth; j++) {
+            if (i == 2076)
+                cout << "--" << j << endl;
+            indices[a].vertex1 = i * imageWidth + j;
+            indices[a].vertex2 = i * imageWidth + j + 1;
+            indices[a].vertex3 = i * imageWidth + imageWidth + j;
+            a++;
 
-            int vertex4 = i * imageWidth + imageWidth + j + 1;
-            triangle triangle2 = triangle(vertex2, vertex4, vertex3);
-            indices.push_back(triangle2);
+            indices[a].vertex1 = i * imageWidth + j + 1;
+            indices[a].vertex2 = i * imageWidth + imageWidth + j + 1;
+            indices[a].vertex3 = i * imageWidth + imageWidth + j;
+            a++;
         }
     }
 

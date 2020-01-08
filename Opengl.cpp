@@ -47,7 +47,7 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *name = "../normal_earth_mini.jpg";
+    const char *name = "../normal_earth_med.jpg";
     setTexture(name, shader);
 
     // Set Vertices
@@ -73,12 +73,11 @@ void OpenGL::Render() {
     vector<vertex> vertices(imageWidth * imageHeight);
     vector<triangle> indices(imageWidth * imageHeight * 2);
     for (int i = 0; i < imageHeight; i++) {
-        cout << i << endl;
         for (int j = 0; j < imageWidth; j++) {
             //start from left bottom  = 0,0,0
-            vertices[i*imageWidth + j].position = glm::vec3(j, 0, i);
-            vertices[i*imageWidth + j].normal = glm::vec3(0, 0, 0);
-            vertices[i*imageWidth + j].texture = glm::vec2((float) j / imageWidth, (float) i / imageHeight);
+            vertices[i * imageWidth + j].position = glm::vec3(j - imageWidth / 2, 0, i - imageHeight / 2);
+            vertices[i * imageWidth + j].normal = glm::vec3(0, -1, 0);
+            vertices[i * imageWidth + j].texture = glm::vec2(1 - (float) j / imageWidth, (float) i / imageHeight);
         }
     }
     /* unsigned int indices[] = {
@@ -91,10 +90,7 @@ void OpenGL::Render() {
     cout << (imageWidth) * (imageHeight) << endl;
     int a = 0;
     for (int i = 0; i < imageHeight - 1; i++) {
-        cout << i << endl;
-        for (int j = 0; j < imageWidth; j++) {
-            if (i == 2076)
-                cout << "--" << j << endl;
+        for (int j = 0; j < imageWidth - 1; j++) {
             indices[a].vertex1 = i * imageWidth + j;
             indices[a].vertex2 = i * imageWidth + j + 1;
             indices[a].vertex3 = i * imageWidth + imageWidth + j;
@@ -253,11 +249,23 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
     }
 
 
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+        cout << "Key Press: R" << endl;
+        heightFactor += 0.5;
+    }
+    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+        cout << "Key Press: F" << endl;
+        heightFactor -= 0.5;
+    }
+
+
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
         cout << "Key Press: I" << endl;
         cameraPosition = cameraStartPosition;
         cameraDirection = cameraStartDirection;
-        speed = 0;
+        pitch = startPitch;
+        yaw = startYaw;
+        speed = startSpeed;
     }
 
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
@@ -412,6 +420,16 @@ void OpenGL::initCamera(GLuint shaderID) {
     GLint lightPosition = glGetUniformLocation(shaderID, "lightPosition");
     glUniform3fv(lightPosition, 1, &lightPos[0]);
 
+    GLint heightFactor = glGetUniformLocation(shaderID, "heightFactor");
+    glUniform1f(heightFactor, this->heightFactor);
+
+
+    GLint imageWidth = glGetUniformLocation(shaderID, "imageWidth");
+    glUniform1f(imageWidth, this->imageWidth);
+
+
+    GLint imageHeight = glGetUniformLocation(shaderID, "imageHeight");
+    glUniform1f(imageHeight, this->imageHeight);
 }
 
 void OpenGL::printVec3(glm::vec3 vec) {

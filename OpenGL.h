@@ -11,6 +11,7 @@ using namespace std;
 
 class OpenGL {
 private:
+    float heightFactor = 10;
     glm::vec3 lightPos;
     bool pKeyPressed = false;
     // DISPLAY SETTINGS
@@ -28,9 +29,12 @@ private:
     float aspectRatio = 1;
     float near = 0.1;
     float far = 10000;
-    float pitch = 0;
-    float yaw = 90;
-    float speed = 0;
+    float startPitch = 0;
+    float startYaw = 90;
+    float startSpeed = 0;
+    float pitch = startPitch;
+    float yaw = startYaw;
+    float speed = startSpeed;
     glm::vec3 cameraStartPosition = glm::vec3(0, 100, 0);
     glm::vec3 cameraStartDirection = glm::vec3(0, 0, 1);
     glm::vec3 cameraUp = glm::vec3(0, 1, 0);

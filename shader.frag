@@ -15,13 +15,13 @@ uniform sampler2D Tex;
 out vec4 FragColor;
 
 
-vec3 ambientReflectenceCoefficient = vec3(0.25f, 0.25f, 0.25f);
-vec3 ambientLightColor = vec3(0.3f, 0.3f, 0.3f);
-vec3 specularReflectenceCoefficient= vec3(1.0f, 1.0f, 1.0f);
-vec3 specularLightColor = vec3 (1.0f, 1.0f, 1.0f);
+vec3 ambientReflectenceCoefficient = vec3(0.25f);
+vec3 ambientLightColor = vec3(0.3f);
+vec3 specularReflectenceCoefficient= vec3(1.0f);
+vec3 specularLightColor = vec3 (1.0f);
 float SpecularExponent = 100;
-vec3 diffuseReflectenceCoefficient= vec3(1.0f, 1.0f, 1.0);
-vec3 diffuseLightColor =vec3(1.0f, 1.0f, 1.0f);
+vec3 diffuseReflectenceCoefficient= vec3(1.0f);
+vec3 diffuseLightColor =vec3(1.0f);
 
 
 

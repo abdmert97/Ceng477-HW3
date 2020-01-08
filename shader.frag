@@ -11,6 +11,7 @@ in vec3 LightVector;
 in vec3 CameraVector;
 
 uniform sampler2D Tex;
+uniform float textureOffset;
 
 out vec4 FragColor;
 
@@ -79,9 +80,9 @@ void main()
 
     }
 
-
-    vec4 texColor = texture(Tex, data.TexCoord);
-    vec4 color = vec4(ambientSum + diffuseSum, 1) * texColor + vec4(specSum, 1);
+    vec2 offset = vec2(mod(textureOffset +  data.TexCoord.x,1),data.TexCoord.y);
+    vec4 texColor = texture(Tex, offset);
+    vec4 color = vec4(ambientSum + diffuseSum, 1.0) * texColor + vec4(specSum, 1);
     color = vec4(clamp(color.xyz, 0.0, 1.0), 1);
 
     FragColor = color;

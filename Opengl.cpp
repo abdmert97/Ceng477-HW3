@@ -257,7 +257,14 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
         cout << "Key Press: F" << endl;
         heightFactor -= 0.5;
     }
-
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        cout << "Key Press: Q" << endl;
+        textureOffset -= 1/imageWidth;
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cout << "Key Press: E" << endl;
+        textureOffset += 1/imageWidth;
+    }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
         cout << "Key Press: I" << endl;
@@ -430,6 +437,9 @@ void OpenGL::initCamera(GLuint shaderID) {
 
     GLint imageHeight = glGetUniformLocation(shaderID, "imageHeight");
     glUniform1f(imageHeight, this->imageHeight);
+
+    GLint textureOffset = glGetUniformLocation(shaderID, "textureOffset");
+    glUniform1f(textureOffset, this->textureOffset);
 }
 
 void OpenGL::printVec3(glm::vec3 vec) {

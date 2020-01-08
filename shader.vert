@@ -13,6 +13,8 @@ uniform mat4 NormalMatrix;
 uniform mat4 MVP;
 
 uniform sampler2D Tex;
+uniform float textureOffset;
+
 uniform float heightFactor;
 uniform float imageWidth;
 uniform float imageHeight;
@@ -30,7 +32,7 @@ out vec3 CameraVector;// Vector from Vertex to Camera;
 
 void main()
 {
-    vec4 texColor = texture(Tex, vec2(VertexTex.x, VertexTex.y));
+    vec4 texColor = texture(Tex, vec2(mod(textureOffset+ VertexTex.x,1.0), VertexTex.y));
     vec3 newPosition = VertexPosition;
     newPosition.y = heightFactor * texColor.x;
 
@@ -42,12 +44,12 @@ void main()
     vec3 adjacentVertex5 = newPosition + vec3(1, 0, -1);
     vec3 adjacentVertex6 = newPosition + vec3(0, 0, -1);
 
-    vec4 texColor1 = texture(Tex, vec2(1-(adjacentVertex1.x+imageWidth/2)/imageWidth, (adjacentVertex1.z+imageHeight/2)/imageHeight));
-    vec4 texColor2 = texture(Tex, vec2(1-(adjacentVertex2.x+imageWidth/2)/imageWidth, (adjacentVertex2.z+imageHeight/2)/imageHeight));
-    vec4 texColor3 = texture(Tex, vec2(1-(adjacentVertex3.x+imageWidth/2)/imageWidth, (adjacentVertex3.z+imageHeight/2)/imageHeight));
-    vec4 texColor4 = texture(Tex, vec2(1-(adjacentVertex4.x+imageWidth/2)/imageWidth, (adjacentVertex4.z+imageHeight/2)/imageHeight));
-    vec4 texColor5 = texture(Tex, vec2(1-(adjacentVertex5.x+imageWidth/2)/imageWidth, (adjacentVertex5.z+imageHeight/2)/imageHeight));
-    vec4 texColor6 = texture(Tex, vec2(1-(adjacentVertex6.x+imageWidth/2)/imageWidth, (adjacentVertex6.z+imageHeight/2)/imageHeight));
+    vec4 texColor1 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex1.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex1.z+imageHeight/2)/imageHeight));
+    vec4 texColor2 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex2.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex2.z+imageHeight/2)/imageHeight));
+    vec4 texColor3 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex3.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex3.z+imageHeight/2)/imageHeight));
+    vec4 texColor4 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex4.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex4.z+imageHeight/2)/imageHeight));
+    vec4 texColor5 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex5.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex5.z+imageHeight/2)/imageHeight));
+    vec4 texColor6 = texture(Tex, vec2(mod(textureOffset+1-(adjacentVertex6.x+imageWidth/2)/imageWidth,1.0), (adjacentVertex6.z+imageHeight/2)/imageHeight));
 
     adjacentVertex1.y = heightFactor * texColor1.x;
     adjacentVertex2.y = heightFactor * texColor2.x;

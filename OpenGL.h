@@ -12,6 +12,7 @@ using namespace std;
 class OpenGL {
 private:
     float heightFactor = 10;
+    float textureOffset = 0;
     glm::vec3 lightPos;
     bool pKeyPressed = false;
     // DISPLAY SETTINGS

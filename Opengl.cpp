@@ -15,7 +15,20 @@
 using namespace std;
 
 GLFWwindow *window;
+struct vertex
+{
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texture;
 
+
+    vertex(glm::vec3 pos, glm::vec3 norm,glm::vec2 tex)
+    {
+        position = pos;
+        normal = norm;
+        texture = tex;
+    }
+};
 
 void OpenGL::Render() {
     // Open window
@@ -25,7 +38,7 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *name = "../normal_earth_med.jpg";
+    const char *name = "../normal_earth_mini.jpg";
     setTexture(name, shader);
 
     // Set Vertices
@@ -38,7 +51,7 @@ void OpenGL::Render() {
     };
     float right = imageWidth / 2;
     float top = imageHeight / 2;
-    float vertices[] = {
+    /*float vertices[] = {
             right, 0.0f, top, .0f, 0.0f, 0.0f, 0.0f, 1.0f, // top right
             right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
             -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top left
@@ -46,23 +59,53 @@ void OpenGL::Render() {
             right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
             -right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
             -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f  // top left
-    };
+    };*/
+    vector<vertex> vertices;
+    vector<unsigned int> indices;
+    for (int i = 0; i <= imageHeight; i++)
+    {
+        for (int j = 0; j <= imageWidth; j++)
+        {
+            //start from left bottom  = 0,0,0
+            glm::vec3 position = glm::vec3(j,0,i);
+            glm::vec3 normal = glm::vec3(0,0,0);
+            glm::vec2 texture = glm::vec2((float)j/imageWidth,(float)i/imageHeight);
 
-    unsigned int indices[] = {
+            vertices.push_back(vertex(position,normal,texture));
+
+        }
+    }
+
+   /* unsigned int indices[] = {
             0, 1, 3, // first triangle
             1, 2, 3
           // second triangle
     };
+*/
 
+   for(int i = 0 ; i< (imageWidth-1)*(imageHeight-1); i++)
+   {
+       indices.push_back(i);
+       indices.push_back(i+1);
+       indices.push_back(i+imageWidth);
+
+       indices.push_back(i+1);
+       indices.push_back(i+1+imageWidth);
+       indices.push_back(i+imageWidth);
+   }
 
     // Normal Calculation
-    glm::vec3 normal1 = calculateNormal(getPosition(vertices, 0), getPosition(vertices, 1), getPosition(vertices, 2));
+    /*glm::vec3 normal1 = calculateNormal(getPosition(vertices, 0), getPosition(vertices, 1), getPosition(vertices, 2));
     setNormal(vertices, 0, normal1);
     setNormal(vertices, 1, normal1);
     setNormal(vertices, 2, normal1);
     setNormal(vertices, 3, normal1);
     setNormal(vertices, 4, normal1);
-    setNormal(vertices, 5, normal1);
+    setNormal(vertices, 5, normal1);*/
+    for(int i = 0 ; i < vertices.size() ;i++)
+    {
+        glm::vec3 normal = glm::vec3 (0,0,-1);
+    }
 
 
     // Configure Buffers
@@ -72,19 +115,18 @@ void OpenGL::Render() {
 
     glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(indices), indices.data(), GL_STATIC_DRAW);
 
-    // position attribute
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), vertices.data(), GL_DYNAMIC_DRAW);
+
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
-    // color attribute
+
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    // texture coord attribute
+
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) (6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
@@ -112,7 +154,7 @@ void OpenGL::Render() {
         // render container
         glUseProgram(shader);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawElements(GL_TRIANGLES, 3 * 2 * (imageHeight ) * (imageWidth ), GL_UNSIGNED_INT, 0);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);

@@ -31,8 +31,8 @@ void light(int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3 
     vec3 n = normalize(norm);
     vec3 s = normalize(LightVector  - position);
 
-    vec3 camera = CameraVector - position;
-    vec3 light = LightVector   - position;
+    vec3 camera = CameraVector;
+    vec3 light = LightVector  ;
     vec3 h = normalize(camera + light);
 
 

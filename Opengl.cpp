@@ -50,7 +50,8 @@ void OpenGL::Render() {
 
     unsigned int indices[] = {
             0, 1, 3, // first triangle
-            1, 2, 3  // second triangle
+            1, 2, 3
+          // second triangle
     };
 
 
@@ -160,11 +161,11 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
         cout << "Key Press: Y" << endl;
-        speed += 0.25;
+        speed += 0.025;
     }
     if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
         cout << "Key Press: H" << endl;
-        speed -= 0.25;
+        speed -= 0.025;
     }
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
         cout << "Key Press: X" << endl;
@@ -306,7 +307,7 @@ void OpenGL::setTexture(const char *filename, GLuint shaderID) {
         imageHeight = height;
         cout << "Texture width: " << width << " height: " << height << endl;
         // Init light position right after obtaining image width/height
-        lightPos = glm::vec3(imageWidth / 2, 100, imageHeight / 2);
+        lightPos = glm::vec3(imageWidth / 2.0f, 100, imageHeight / 2.0f);
     } else {
         std::cout << "Failed to load texture" << std::endl;
     }
@@ -360,7 +361,10 @@ void OpenGL::initCamera(GLuint shaderID) {
     glUniform3fv(lightPosition, 1, &lightPos[0]);
 
 }
-
+void OpenGL::printVec3( glm::vec3 vec)
+{
+    cout << "Vector : "<< vec.x  << " " << " " << vec.y<<" "<< vec.z<< endl;
+}
 
 glm::vec3 OpenGL::getPosition(float *vertices, int i) {
     return glm::vec3(vertices[8 * i], vertices[8 * i + 1], vertices[8 * i + 2]);

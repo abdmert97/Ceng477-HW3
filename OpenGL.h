@@ -27,7 +27,7 @@ private:
     float projectionAngle = 45;
     float aspectRatio = 1;
     float near = 0.1;
-    float far = 1000;
+    float far = 10000;
     float pitch = 0;
     float yaw = 90;
     float speed = 0;
@@ -61,6 +61,8 @@ public:
     void handleKeyPress(GLFWwindow *window);
 
     void setCameraDirection();
+
+    void printVec3(glm::vec3 vec);
 };
 
 #endif

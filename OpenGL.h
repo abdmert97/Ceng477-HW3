@@ -42,7 +42,8 @@ private:
     glm::vec3 cameraPosition = cameraStartPosition;
     glm::vec3 cameraDirection = cameraStartDirection;
 public:
-    unsigned int texture;
+    unsigned int textureColor;
+    unsigned int textureGrey;
     unsigned int VAO;
     unsigned int VBO, EBO;
     float imageHeight;
@@ -51,7 +52,7 @@ public:
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
     // void drawTriangle(float* vertices, unsigned int* indices);
-    void setTexture(const char *filename, GLuint shaderID);
+    void setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID);
 
     void Render();
 

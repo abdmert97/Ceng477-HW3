@@ -47,8 +47,9 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *name = "../normal_earth_med.jpg";
-    setTexture(name, shader);
+    const char *nameColor = "../normal_earth_med.jpg";
+    const char *nameGrey = "../height_gray_med.jpg";
+    setTexture(nameColor,nameGrey, shader);
 
     // Set Vertices
     float vertices2[] = {
@@ -77,7 +78,7 @@ void OpenGL::Render() {
             //start from left bottom  = 0,0,0
             vertices[i * imageWidth + j].position = glm::vec3(j - imageWidth / 2, 0, i - imageHeight / 2);
             vertices[i * imageWidth + j].normal = glm::vec3(0, -1, 0);
-            vertices[i * imageWidth + j].texture = glm::vec2(1 - (float) j / imageWidth, (float) i / imageHeight);
+            vertices[i * imageWidth + j].texture = glm::vec2(1 - (float) j / imageWidth,1 - (float) i / imageHeight);
         }
     }
     /* unsigned int indices[] = {
@@ -158,7 +159,10 @@ void OpenGL::Render() {
 
 
         // bind Texture
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureColor);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, textureGrey);
         // render container
         glUseProgram(shader);
         glBindVertexArray(VAO);
@@ -211,11 +215,11 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
         cout << "Key Press: Y" << endl;
-        speed += 0.025;
+        speed += 0.1;
     }
     if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
         cout << "Key Press: H" << endl;
-        speed -= 0.025;
+        speed -= 0.1;
     }
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
         cout << "Key Press: X" << endl;
@@ -351,23 +355,24 @@ GLFWwindow *OpenGL::openWindow(const char *windowName, int width, int height) {
     return window;
 }
 
-void OpenGL::setTexture(const char *filename, GLuint shaderID) {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID) {
+    glGenTextures(1, &textureColor);
+    glBindTexture(GL_TEXTURE_2D, textureColor);
     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+    int stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    cout<< filenameColored<< " " << filenameGray<< endl;
+    unsigned char *dataColored = stbi_load(filenameColored, &width, &height, &nrChannels, 0);
+
+    if (dataColored) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataColored);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         imageWidth = width;
@@ -375,14 +380,42 @@ void OpenGL::setTexture(const char *filename, GLuint shaderID) {
         cout << "Texture width: " << width << " height: " << height << endl;
         // Init light position right after obtaining image width/height
         lightPos = glm::vec3(imageWidth / 2.0f, 100, imageHeight / 2.0f);
-    } else {
+
+
+    }
+    else {
         std::cout << "Failed to load texture" << std::endl;
     }
-    stbi_image_free(data);
 
+    stbi_image_free(dataColored);
+    glGenTextures(1, &textureGrey);
+    glBindTexture(GL_TEXTURE_2D, textureGrey);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+    unsigned char *dataGray = stbi_load(filenameGray, &width, &height, &nrChannels, 0);
+    if (dataGray) {
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataGray);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+
+    }
+    else {
+        std::cout << "Failed to load texture" << std::endl;
+    }
     glUseProgram(shaderID); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
-    glUniform1i(glGetUniformLocation(shaderID, "Tex"), 0);
+    glUniform1i(glGetUniformLocation(shaderID, "TexColor"), 0);
+    glUniform1i(glGetUniformLocation(shaderID, "TexGrey"), 1);
+
+    stbi_image_free(dataGray);
+
 }
 
 

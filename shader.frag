@@ -86,5 +86,5 @@ void main()
     vec4 color = vec4(ambientSum + diffuseSum, 1.0) * texColor + vec4(specSum, 1);
     color = vec4(clamp(color.xyz, 0.0, 1.0), 1);
 
-    FragColor = texColor;
+    FragColor = color;
 }

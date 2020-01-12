@@ -238,23 +238,23 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         cout << "Key Press: W" << endl;
-        pitch -= 0.5;
-        setCameraDirection();
+        glm::vec3 cameraLeft = glm::cross(cameraDirection, cameraUp);
+        cameraUp = glm::rotate(cameraUp, 0.05f, cameraLeft);
+        cameraDirection = glm::rotate(cameraDirection, 0.05f, cameraLeft);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         cout << "Key Press: S" << endl;
-        pitch += 0.5;
-        setCameraDirection();
+        glm::vec3 cameraLeft = glm::cross(cameraDirection, cameraUp);
+        cameraUp = glm::rotate(cameraUp, -0.05f, cameraLeft);
+        cameraDirection = glm::rotate(cameraDirection, -0.05f, cameraLeft);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         cout << "Key Press: D" << endl;
-        yaw -= 0.5;
-        setCameraDirection();
+        cameraDirection = glm::rotate(cameraDirection, -0.05f, cameraUp);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         cout << "Key Press: A" << endl;
-        yaw += 0.5;
-        setCameraDirection();
+        cameraDirection = glm::rotate(cameraDirection, 0.05f, cameraUp);
     }
 
 
@@ -319,6 +319,7 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
         cout << "Key Press: I" << endl;
         cameraPosition = cameraStartPosition;
         cameraDirection = cameraStartDirection;
+        cameraUp = cameraStartUp;
         pitch = startPitch;
         yaw = startYaw;
         speed = startSpeed;
@@ -338,10 +339,11 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
             displayFormat = displayFormatOptions::fullScreen;
             glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, screenWidth, screenHeight, mode->refreshRate);
         } else if (displayFormat == displayFormatOptions::fullScreen) {
+            const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             screenWidth = defaultScreenWidth;
             screenHeight = defaultScreenHeight;
             displayFormat = displayFormatOptions::windowed;
-            glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
+            glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, mode->refreshRate);
         }
         pKeyPressed = false;
     }
@@ -477,7 +479,6 @@ glm::vec3 Sphere::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
 
 
 void Sphere::initCamera(GLuint shaderID) {
-    setCameraDirection();
     cameraPosition += speed * cameraDirection;
     glm::mat4 M_projection = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
 

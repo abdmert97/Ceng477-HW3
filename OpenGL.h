@@ -43,7 +43,8 @@ private:
     float speed = startSpeed;
     glm::vec3 cameraStartPosition = glm::vec3(0, 100, 0);
     glm::vec3 cameraStartDirection = glm::vec3(0, 0, 1);
-    glm::vec3 cameraUp = glm::vec3(0, 1, 0);
+    glm::vec3 cameraStartUp = glm::vec3(0, 1, 0);
+    glm::vec3 cameraUp = cameraStartUp;
     glm::vec3 cameraPosition = cameraStartPosition;
     glm::vec3 cameraDirection = cameraStartDirection;
 public:

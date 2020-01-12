@@ -31,17 +31,17 @@ void light(int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3 
 {
 
     vec3 n = normalize(norm);
-    vec3 s = normalize(LightVector  - position);
+    vec3 s = normalize(LightVector);
 
     vec3 camera = CameraVector;
-    vec3 light = LightVector  ;
+    vec3 light = LightVector;
     vec3 h = normalize(camera + light);
 
 
+    vec3 reflect = reflect(-LightVector, n);
 
-
-    float cos_alpha = clamp(dot(n, h), 0, 1);
-    float cos_theta = clamp(dot(n, light), 0, 1);
+    float cos_alpha = max(dot(CameraVector, reflect), 0);
+    float cos_theta = max(dot(n, LightVector), 0);
 
 
     // compute ambient component
@@ -62,9 +62,6 @@ void main()
     vec3 specSum = vec3(0);
     vec3 ambient, diffuse, spec;
 
-
-
-
     if (gl_FrontFacing)
     {
 
@@ -84,10 +81,11 @@ void main()
 
     }
 
-    vec2 offset = vec2(mod(textureOffset +  data.TexCoord.x,1),data.TexCoord.y);
+    vec2 offset = vec2(mod(textureOffset +  data.TexCoord.x, 1), data.TexCoord.y);
     vec4 texColor = texture(TexColor, offset);
-    vec4 color = vec4(ambientSum + diffuseSum, 1.0) * texColor + vec4(specSum, 1);
+    vec4 color = vec4(ambientSum + diffuseSum + specSum, 1.0) * texColor;
     color = vec4(clamp(color.xyz, 0.0, 1.0), 1);
 
     FragColor = color;
 }
+

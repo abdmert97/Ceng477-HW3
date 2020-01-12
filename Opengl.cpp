@@ -44,8 +44,8 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *nameColor = "../normal_earth_mini.jpg";
-    const char *nameGrey = "../height_gray_mini.jpg";
+    const char *nameColor = "../normal_earth_med.jpg";
+    const char *nameGrey = "../height_gray_med.jpg";
     setTexture(nameColor, nameGrey, shader);
 
     // Set Vertices
@@ -179,11 +179,11 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
         cout << "Key Press: Y" << endl;
-        speed += 0.1;
+        speed += 0.01;
     }
     if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
         cout << "Key Press: H" << endl;
-        speed -= 0.1;
+        speed -= 0.01;
     }
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
         cout << "Key Press: X" << endl;

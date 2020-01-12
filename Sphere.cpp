@@ -330,7 +330,7 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
     }
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pKeyPressed) {
         cout << "Key Release: P" << endl;
-        aspectRatio = 16/9;
+
         if (displayFormat == displayFormatOptions::windowed) {
             const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             screenWidth = mode->width;
@@ -479,8 +479,10 @@ glm::vec3 Sphere::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
 
 
 void Sphere::initCamera(GLuint shaderID) {
+    setCameraDirection();
     cameraPosition += speed * cameraDirection;
     glm::mat4 M_projection = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
+
     glm::mat4 M_view = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
     glm::mat4 M_model = glm::mat4(1.0f);
 
@@ -522,6 +524,8 @@ void Sphere::initCamera(GLuint shaderID) {
 
     GLint textureOffset = glGetUniformLocation(shaderID, "textureOffset");
     glUniform1f(textureOffset, this->textureOffset);
+
+
 }
 
 void Sphere::printVec3(glm::vec3 vec) {

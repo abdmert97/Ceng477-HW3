@@ -35,8 +35,8 @@ private:
     float aspectRatio = 1;
     float near = 0.1;
     float far = 10000;
-    float startPitch = 0;
-    float startYaw = 90;
+    float startPitch = -90;
+    float startYaw = -90;
     float startSpeed = 0;
     float pitch = startPitch;
     float yaw = startYaw;

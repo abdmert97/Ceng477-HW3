@@ -8,7 +8,7 @@ add_executable(main
         Opengl.cpp
         Shader.hpp
         Shader.cpp
-        )
+        Sphere.h Sphere.cpp)
 
 set_property(TARGET main PROPERTY CXX_STANDARD 11)
 target_compile_options(main PRIVATE -Wall)

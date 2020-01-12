@@ -35,7 +35,7 @@ void main()
 {
     vec4 texColor = texture(TexGrey, vec2(mod(textureOffset+ VertexTex.x, 1.0), VertexTex.y));
     vec3 newPosition = VertexPosition;
-    newPosition += heightFactor * texColor.x* VertexNormal;
+    newPosition +=  VertexNormal*heightFactor * texColor.x;
 
 
 

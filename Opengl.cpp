@@ -1,11 +1,8 @@
 // Include GLM
 
-#include <vector>
-#include <GL/glew.h>
-#include <iostream>
-#include <glm/ext.hpp>
+
 #include "OpenGL.h"
-#include "Shader.hpp"
+
 
 #define STB_IMAGE_IMPLEMENTATION
 

@@ -2,6 +2,11 @@
 #define OPENGL_H
 
 #include <vector>
+#include <GL/glew.h>
+#include <iostream>
+#include <glm/ext.hpp>
+#include "Shader.hpp"
+#include <vector>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 

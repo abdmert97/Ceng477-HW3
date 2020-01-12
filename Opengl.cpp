@@ -44,46 +44,24 @@ void OpenGL::Render() {
     GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
 
     // Set Texture
-    const char *nameColor = "../normal_earth_med.jpg";
-    const char *nameGrey = "../height_gray_med.jpg";
-    setTexture(nameColor,nameGrey, shader);
+    const char *nameColor = "../normal_earth_mini.jpg";
+    const char *nameGrey = "../height_gray_mini.jpg";
+    setTexture(nameColor, nameGrey, shader);
 
     // Set Vertices
-    float vertices2[] = {
-            // positions         // normal           // texture coords
-            0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // top left
-    };
-    float right = imageWidth / 2;
-    float top = imageHeight / 2;
-    /*float vertices[] = {
-            right, 0.0f, top, .0f, 0.0f, 0.0f, 0.0f, 1.0f, // top right
-            right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
-            -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top left
-
-            right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
-            -right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
-            -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f  // top left
-    };*/
     cout << "123" << endl;
     vector<vertex> vertices(imageWidth * imageHeight);
     vector<triangle> indices(imageWidth * imageHeight * 2);
     for (int i = 0; i < imageHeight; i++) {
         for (int j = 0; j < imageWidth; j++) {
             //start from left bottom  = 0,0,0
-            vertices[i * imageWidth + j].position = glm::vec3(j - imageWidth / 2, 0, i - imageHeight / 2);
+            vertices[i * imageWidth + j].position = glm::vec3(j, 0, i);
             vertices[i * imageWidth + j].normal = glm::vec3(0, -1, 0);
-            vertices[i * imageWidth + j].texture = glm::vec2(1 - (float) j / imageWidth,1 - (float) i / imageHeight);
+            vertices[i * imageWidth + j].texture = glm::vec2(1 - ((float) j) / imageWidth,
+                                                             1 - ((float) i) / imageHeight);
         }
     }
-    /* unsigned int indices[] = {
-             0, 1, 3, // first triangle
-             1, 2, 3
-           // second triangle
-     };
- */
+
     //TODO: en sağdakinin bir sağı kayıyor olabilir
     cout << (imageWidth) * (imageHeight) << endl;
     int a = 0;
@@ -102,17 +80,6 @@ void OpenGL::Render() {
     }
 
     cout << "345" << endl;
-    // Normal Calculation
-    /*glm::vec3 normal1 = calculateNormal(getPosition(vertices, 0), getPosition(vertices, 1), getPosition(vertices, 2));
-    setNormal(vertices, 0, normal1);
-    setNormal(vertices, 1, normal1);
-    setNormal(vertices, 2, normal1);
-    setNormal(vertices, 3, normal1);
-    setNormal(vertices, 4, normal1);
-    setNormal(vertices, 5, normal1);*/
-    for (int i = 0; i < vertices.size(); i++) {
-        glm::vec3 normal = glm::vec3(0, 0, 1);
-    }
 
 
     // Configure Buffers
@@ -260,11 +227,11 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         cout << "Key Press: Q" << endl;
-        textureOffset -= 1/imageWidth;
+        textureOffset -= 1 / imageWidth;
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         cout << "Key Press: E" << endl;
-        textureOffset += 1/imageWidth;
+        textureOffset += 1 / imageWidth;
     }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
@@ -352,11 +319,12 @@ GLFWwindow *OpenGL::openWindow(const char *windowName, int width, int height) {
     return window;
 }
 
-void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID) {
+void OpenGL::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -365,7 +333,7 @@ void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GL
     int width, height, nrChannels;
     int stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    cout<< filenameColored<< " " << filenameGray<< endl;
+    cout << filenameColored << " " << filenameGray << endl;
     unsigned char *dataColored = stbi_load(filenameColored, &width, &height, &nrChannels, 0);
 
     if (dataColored) {
@@ -377,10 +345,10 @@ void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GL
         cout << "Texture width: " << width << " height: " << height << endl;
         // Init light position right after obtaining image width/height
         lightPos = glm::vec3(imageWidth / 2.0f, 100, imageHeight / 2.0f);
+        cameraPosition = glm::vec3(imageWidth / 2.0f, imageWidth / 10.0f, -imageWidth / 4.0f);
 
 
-    }
-    else {
+    } else {
         std::cout << "Failed to load texture" << std::endl;
     }
 
@@ -388,7 +356,8 @@ void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GL
     glGenTextures(1, &textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);
     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -402,8 +371,7 @@ void OpenGL::setTexture(const char *filenameColored,const char *filenameGray, GL
         glGenerateMipmap(GL_TEXTURE_2D);
 
 
-    }
-    else {
+    } else {
         std::cout << "Failed to load texture" << std::endl;
     }
     glUseProgram(shaderID); // don't forget to activate/use the shader before setting uniforms!

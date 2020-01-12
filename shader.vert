@@ -33,11 +33,11 @@ out vec3 CameraVector;// Vector from Vertex to Camera;
 
 void main()
 {
-    vec4 texColor = texture(TexGrey, vec2(mod(textureOffset+ VertexTex.x,1.0), VertexTex.y));
+    vec4 texColor = texture(TexGrey, vec2(mod(textureOffset+ VertexTex.x, 1.0), VertexTex.y));
     vec3 newPosition = VertexPosition;
     newPosition.y = heightFactor * texColor.x;
 
-    vec3 offset = newPosition;
+
     vec3 adjacentVertex1 = newPosition + vec3(-1, 0, 0);
     vec3 adjacentVertex2 = newPosition + vec3(-1, 0, 1);
     vec3 adjacentVertex3 = newPosition + vec3(0, 0, 1);
@@ -45,12 +45,12 @@ void main()
     vec3 adjacentVertex5 = newPosition + vec3(1, 0, -1);
     vec3 adjacentVertex6 = newPosition + vec3(0, 0, -1);
 
-    vec4 texColor1 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex1.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex1.z+imageHeight/2)/imageHeight));
-    vec4 texColor2 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex2.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex2.z+imageHeight/2)/imageHeight));
-    vec4 texColor3 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex3.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex3.z+imageHeight/2)/imageHeight));
-    vec4 texColor4 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex4.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex4.z+imageHeight/2)/imageHeight));
-    vec4 texColor5 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex5.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex5.z+imageHeight/2)/imageHeight));
-    vec4 texColor6 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex6.x+imageWidth/2)/imageWidth,1.0), 1- (adjacentVertex6.z+imageHeight/2)/imageHeight));
+    vec4 texColor1 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex1.x)/imageWidth, 1.0), 1- (adjacentVertex1.z)/imageHeight));
+    vec4 texColor2 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex2.x)/imageWidth, 1.0), 1- (adjacentVertex2.z)/imageHeight));
+    vec4 texColor3 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex3.x)/imageWidth, 1.0), 1- (adjacentVertex3.z)/imageHeight));
+    vec4 texColor4 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex4.x)/imageWidth, 1.0), 1- (adjacentVertex4.z)/imageHeight));
+    vec4 texColor5 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex5.x)/imageWidth, 1.0), 1- (adjacentVertex5.z)/imageHeight));
+    vec4 texColor6 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex6.x)/imageWidth, 1.0), 1- (adjacentVertex6.z)/imageHeight));
 
     adjacentVertex1.y = heightFactor * texColor1.x;
     adjacentVertex2.y = heightFactor * texColor2.x;
@@ -72,8 +72,8 @@ void main()
     data.Position = vec3(ViewMatrix * vec4(newPosition, 1));
     data.TexCoord = vec2(VertexTex.x, VertexTex.y);
 
-    CameraVector = normalize(vec3(  vec4(cameraPosition - data.Position, 0)));
-    LightVector = normalize(vec3( vec4(lightPosition - data.Position, 0)));
+    CameraVector = normalize(vec3(vec4(cameraPosition - data.Position, 0)));
+    LightVector = normalize(vec3(vec4(lightPosition - data.Position, 0)));
 
 
     gl_Position = MVP* vec4(newPosition, 1);

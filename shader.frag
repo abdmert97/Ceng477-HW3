@@ -34,7 +34,7 @@ void light(int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3 
     vec3 s = normalize(LightVector  - position);
 
     vec3 camera = CameraVector;
-    vec3 light = LightVector  ;
+    vec3 light = LightVector;
     vec3 h = normalize(camera + light);
 
 
@@ -81,7 +81,7 @@ void main()
 
     }
 
-    vec2 offset = vec2(mod(textureOffset +  data.TexCoord.x,1),data.TexCoord.y);
+    vec2 offset = vec2(mod(textureOffset +  data.TexCoord.x, 1), data.TexCoord.y);
     vec4 texColor = texture(TexColor, offset);
     vec4 color = vec4(ambientSum + diffuseSum, 1.0) * texColor + vec4(specSum, 1);
     color = vec4(clamp(color.xyz, 0.0, 1.0), 1);

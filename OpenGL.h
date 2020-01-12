@@ -57,7 +57,7 @@ public:
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
     // void drawTriangle(float* vertices, unsigned int* indices);
-    void setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID);
+    void setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID);
 
     void Render();
 

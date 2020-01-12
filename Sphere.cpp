@@ -238,22 +238,22 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         cout << "Key Press: W" << endl;
-        pitch += 0.5;
+        pitch -= 0.5;
         setCameraDirection();
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         cout << "Key Press: S" << endl;
-        pitch -= 0.5;
+        pitch += 0.5;
         setCameraDirection();
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         cout << "Key Press: D" << endl;
-        yaw += 0.5;
+        yaw -= 0.5;
         setCameraDirection();
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         cout << "Key Press: A" << endl;
-        yaw -= 0.5;
+        yaw += 0.5;
         setCameraDirection();
     }
 
@@ -351,12 +351,10 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
 void Sphere::setCameraDirection() {
     glm::vec3 front;
     front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-    front.y = sin(glm::radians(this->pitch));
-    front.z = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+    front.y = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+    front.z = sin(glm::radians(this->pitch));
 
     this->cameraDirection = glm::normalize(front);
-    glm::vec3 right = glm::normalize(glm::cross(cameraDirection, glm::vec3(0,1,0)));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    cameraUp = glm::normalize(glm::cross(right, cameraDirection));
 }
 
 

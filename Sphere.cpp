@@ -308,11 +308,11 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         cout << "Key Press: Q" << endl;
-        textureOffset -= 1/imageWidth;
+        textureOffset -= 1.0/sectorCount;
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
         cout << "Key Press: E" << endl;
-        textureOffset += 1/imageWidth;
+        textureOffset += 1.0/sectorCount;
     }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {

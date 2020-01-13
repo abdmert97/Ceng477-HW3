@@ -72,8 +72,8 @@ void main()
     data.Position = vec3(ViewMatrix * vec4(newPosition, 1));
     data.TexCoord = vec2(VertexTex.x, VertexTex.y);
 
-    CameraVector = normalize(cameraPosition - data.Position);
-    LightVector = normalize(lightPosition - data.Position);
+    CameraVector = normalize(cameraPosition - newPosition);
+    LightVector = normalize(lightPosition - newPosition);
 
 
     gl_Position = MVP* vec4(newPosition, 1);

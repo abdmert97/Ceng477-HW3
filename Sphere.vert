@@ -38,16 +38,12 @@ void main()
     newPosition +=  VertexNormal*heightFactor * texColor.x;
 
 
-
-
-    vec3 averageNormal = VertexNormal;
-
-    data.Normal = vec3(normalize(vec3(NormalMatrix * vec4(averageNormal, 0))));
+    data.Normal = vec3(normalize(vec3(NormalMatrix * vec4(VertexNormal, 0))));
     data.Position = vec3(ViewMatrix * vec4(newPosition, 1));
     data.TexCoord = vec2(VertexTex.x, VertexTex.y);
 
-    CameraVector = normalize(cameraPosition - data.Position);
-    LightVector = normalize(lightPosition - data.Position);
+    CameraVector = normalize(cameraPosition - newPosition);
+    LightVector = normalize(lightPosition - newPosition);
 
 
     gl_Position = MVP* vec4(newPosition, 1);

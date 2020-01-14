@@ -1,9 +1,5 @@
 #include "SphereMap.h"
-
-
 using namespace std;
-
-
 
 struct vertex {
     glm::vec3 position;
@@ -38,7 +34,7 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
     initTexture(coloredTexturePath,shaderID);
     initTextureGrey(greyTexturePath,shaderID);
     setText(shaderID);
-
+//---------------------------------------
     // Set Vertices
     float x, y, z, xy;                              // vertex position
     float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
@@ -125,7 +121,7 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
         interleavedVertices.push_back(texCoords[j]);
         interleavedVertices.push_back(texCoords[j+1]);
     }
-
+//---------------------------------------
 
 
 
@@ -320,7 +316,7 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     }
 }
 
-
+//---------------------------------------
 GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height) {
     if (!glfwInit()) {
         getchar();
@@ -355,17 +351,7 @@ GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height)
 
     return window;
 }
-
-
-glm::vec3 SphereMap::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
-    glm::vec3 N = glm::cross((v1 - v2), (v1 - v3)); //perform cross product of two lines on plane
-
-    if (glm::length(N) > 0) {
-        N = glm::normalize(N);  //normalize
-    }
-    return N;
-}
-
+//---------------------------------------
 
 void SphereMap::updateCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;

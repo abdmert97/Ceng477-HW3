@@ -19,7 +19,7 @@ class SphereMap {
 private:
     float heightFactor = 0;
     float textureOffset = 0;
-   
+    glm::vec3 lightPos = glm::vec3(0, 1600, 0);
     bool pKeyPressed = false;
     // DISPLAY SETTINGS
     enum displayFormatOptions {
@@ -45,7 +45,6 @@ private:
     glm::vec3 cameraStartPosition = glm::vec3(0, 600, 0);
     glm::vec3 cameraStartDirection = glm::vec3(0, -1,0);
     glm::vec3 cameraStartUp = glm::vec3(0, 0, 1);
-     glm::vec3 lightPos = glm::vec3(0, 1600, 0);
     glm::vec3 cameraUp = cameraStartUp;
     glm::vec3 cameraPosition = cameraStartPosition;
     glm::vec3 cameraDirection = cameraStartDirection;
@@ -57,8 +56,8 @@ public:
     float imageHeight;
     float imageWidth;
     float radius = 350;
-    int sectorCount = 250;                        // longitude, # of slices
-    int stackCount = 125;                         // latitude, # of stacks
+    int sectorCount = 250;
+    int stackCount = 125;
 
     vector<float> interleavedVertices;
     vector<float> vertices;
@@ -67,24 +66,12 @@ public:
     vector<unsigned int> indices;
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
-    // void drawTriangle(float* vertices, unsigned int* indices);
-    void setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID);
 
     void Render(const char *coloredTexturePath,const char *greyTexturePath);
 
-    static glm::vec3 calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
-
     void updateCamera(GLuint shaderID);
 
-    glm::vec3 getPosition(float *vertices, int i);
-
-    void setNormal(float *vertices, int i, glm::vec3 normal);
-
     void handleKeyPress(GLFWwindow *window);
-
-    void setCameraDirection();
-
-    void printVec3(glm::vec3 vec);
 
     void setText(GLuint shader);
     

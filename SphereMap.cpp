@@ -64,23 +64,22 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     }
 
     for (int i = 0; i < verticalSplitCount; i++) {
-        int k1 = i * (horizontalSplitCount + 1);     // beginning of current stack
-        int k2 = k1 + horizontalSplitCount + 1;      // beginning of next stack
+        int c=0;
 
-        for (int j = 0; j < horizontalSplitCount; j++, k1++, k2++) {
+        for (int j = 0; j < horizontalSplitCount; j++, c++) {
             // 2 triangles per sector excluding first and last stacks
             // k1 => k2 => k1+1
             if (i != 0) {
-                indices.push_back(k1);
-                indices.push_back(k2);
-                indices.push_back(k1 + 1);
+                indices.push_back(i * (horizontalSplitCount + 1)+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1)+c);
+                indices.push_back(i * (horizontalSplitCount + 1) + 1+c);
             }
 
             // k1+1 => k2 => k2+1
             if (i != (verticalSplitCount - 1)) {
-                indices.push_back(k1 + 1);
-                indices.push_back(k2);
-                indices.push_back(k2 + 1);
+                indices.push_back(i * (horizontalSplitCount + 1) + 1+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1)+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1) + 1+c);
             }
         }
     }

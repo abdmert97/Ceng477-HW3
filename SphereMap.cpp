@@ -36,24 +36,17 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
     setText(shaderID);
 //---------------------------------------
     // Set Vertices
-                             // vertex position
-       // vertex normal
-    float s, t;                                     // vertex texCoord
-
-    float sectorStep = 2 *  PI / sectorCount;
-    float stackStep = PI / stackCount;
-
     for(int i = 0; i <= stackCount; ++i)
     {
-        float stackAngle = PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
-        float xy = radius * cosf(stackAngle);             // r * cos(u)
-        float z = radius * sinf(stackAngle);              // r * sin(u)
+        float stackAngle =i * PI / stackCount;        // starting from pi/2 to -pi/2
+        float xy = radius * sinf(stackAngle);             // r * cos(u)
+        float z = radius * cosf(stackAngle);              // r * sin(u)
 
         // add (sectorCount+1) vertices per stack
         // the first and last vertices have same position and normal, but different tex coords
         for(int j = 0; j <= sectorCount; ++j)
         {
-            float sectorAngle = j * sectorStep;           // starting from 0 to 2pi
+            float sectorAngle = j * 2 *  PI / sectorCount;           // starting from 0 to 2pi
 
             // vertex position (x, y, z)
            float x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)

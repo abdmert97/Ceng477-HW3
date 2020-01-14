@@ -25,9 +25,9 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath) {
+void FlatMap::Render(const char *coloredTexturePath, const char *greyTexturePath) {
     // Open window
-    GLFWwindow* window = openWindow(windowName, screenWidth, screenHeight);
+    GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
     GLuint shaderID = LoadShaders("flatShader.vert", "flatShader.frag");
@@ -37,7 +37,7 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
     //const char *greyTexturePath = "height_gray_mini.jpg";
     initColoredTexture(coloredTexturePath, shaderID);
     initGreyTexture(greyTexturePath, shaderID);
- 
+
     // Initialize data structures
     vector<vertex> vertices(imageWidth * imageHeight);      // Four vertices for every pixel
     vector<triangle> indices(imageWidth * imageHeight * 2); // Two triangles for every pixel
@@ -57,15 +57,18 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
     int currentIndex = 0;
     for (int i = 0; i < imageHeight - 1; i++) {
         for (int j = 0; j < imageWidth - 1; j++) {
-            indices[currentIndex].vertex1 = i * imageWidth + j;
-            indices[currentIndex].vertex2 = i * imageWidth + j + 1;
-            indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
-            currentIndex++;
-
-            indices[currentIndex].vertex1 = i * imageWidth + j + 1;
-            indices[currentIndex].vertex2 = i * imageWidth + imageWidth + j + 1;
-            indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
-            currentIndex++;
+            if (i != 0) {
+                indices[currentIndex].vertex1 = i * imageWidth + j;
+                indices[currentIndex].vertex2 = i * imageWidth + j + 1;
+                indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
+                currentIndex++;
+            }
+            if (i != imageHeight - 2) {
+                indices[currentIndex].vertex1 = i * imageWidth + j + 1;
+                indices[currentIndex].vertex2 = i * imageWidth + imageWidth + j + 1;
+                indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
+                currentIndex++;
+            }
         }
     }
 
@@ -132,8 +135,7 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
         // Swap buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
-    while (!glfwWindowShouldClose(window));
+    } while (!glfwWindowShouldClose(window));
 
     // Delete buffers
     glDeleteBuffers(1, &VAO);
@@ -275,7 +277,7 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow* window = glfwCreateWindow(width, height, windowName, NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
 
     if (window == NULL) {
@@ -294,7 +296,7 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     }
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glClearColor(0, 0,0, 0);
+    glClearColor(0, 0, 0, 0);
 
     return window;
 }
@@ -302,7 +304,7 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
 
 void FlatMap::updateCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
-    
+
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
 
     glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
@@ -311,20 +313,20 @@ void FlatMap::updateCamera(GLuint shaderID) {
 
     glm::mat4 MVPMatrixNormal = inverseTranspose(viewMatrix);
 
-GLint projectionMatrixId = glGetUniformLocation(shaderID, "ProjectionMatrix");
-glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, &projectionMatrix[0][0]);
+    GLint projectionMatrixId = glGetUniformLocation(shaderID, "ProjectionMatrix");
+    glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-GLint viewMatrixId = glGetUniformLocation(shaderID, "ViewMatrix");
-glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, &viewMatrix[0][0]);
+    GLint viewMatrixId = glGetUniformLocation(shaderID, "ViewMatrix");
+    glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, &viewMatrix[0][0]);
 
-GLint MVPMatrixId = glGetUniformLocation(shaderID, "MVP");
-glUniformMatrix4fv(MVPMatrixId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    GLint MVPMatrixId = glGetUniformLocation(shaderID, "MVP");
+    glUniformMatrix4fv(MVPMatrixId, 1, GL_FALSE, &MVPMatrix[0][0]);
 
-GLint MVPMatrixNormalId = glGetUniformLocation(shaderID, "NormalMatrix");
-glUniformMatrix4fv(MVPMatrixNormalId, 1, GL_FALSE, &MVPMatrixNormal[0][0]);
+    GLint MVPMatrixNormalId = glGetUniformLocation(shaderID, "NormalMatrix");
+    glUniformMatrix4fv(MVPMatrixNormalId, 1, GL_FALSE, &MVPMatrixNormal[0][0]);
 }
 
-void FlatMap::updateUniforms(GLuint shaderID){
+void FlatMap::updateUniforms(GLuint shaderID) {
     GLint cameraPositionId = glGetUniformLocation(shaderID, "cameraPosition");
     glUniform3fv(cameraPositionId, 1, &cameraPosition[0]);
 
@@ -346,8 +348,7 @@ void FlatMap::updateUniforms(GLuint shaderID){
 }
 
 
- void FlatMap::initColoredTexture(const char *filename, GLuint shader)
-{
+void FlatMap::initColoredTexture(const char *filename, GLuint shader) {
     int width, height;
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
@@ -370,48 +371,46 @@ void FlatMap::updateUniforms(GLuint shaderID){
     /* libjpeg data structure for storing one row, that is, scanline of an image */
     JSAMPROW row_pointer[1];
 
-    FILE *infile = fopen( filename, "rb" );
+    FILE *infile = fopen(filename, "rb");
     unsigned long location = 0;
     int i = 0, j = 0;
 
-    if ( !infile )
-    {
-        printf("Error opening jpeg file %s\n!", filename );
+    if (!infile) {
+        printf("Error opening jpeg file %s\n!", filename);
         return;
     }
-    printf("Texture filename = %s\n",filename);
+    printf("Texture filename = %s\n", filename);
 
     /* here we set up the standard libjpeg error handler */
-    cinfo.err = jpeg_std_error( &jerr );
+    cinfo.err = jpeg_std_error(&jerr);
     /* setup decompression process and source, then read JPEG header */
-    jpeg_create_decompress( &cinfo );
+    jpeg_create_decompress(&cinfo);
     /* this makes the library read from infile */
-    jpeg_stdio_src( &cinfo, infile );
+    jpeg_stdio_src(&cinfo, infile);
     /* reading the image header which contains image information */
-    jpeg_read_header( &cinfo, TRUE );
+    jpeg_read_header(&cinfo, TRUE);
     /* Start decompression jpeg here */
-    jpeg_start_decompress( &cinfo );
+    jpeg_start_decompress(&cinfo);
 
     /* allocate memory to hold the uncompressed image */
-    raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
+    raw_image = (unsigned char *) malloc(cinfo.output_width * cinfo.output_height * cinfo.num_components);
     /* now actually read the jpeg into the raw buffer */
-    row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
+    row_pointer[0] = (unsigned char *) malloc(cinfo.output_width * cinfo.num_components);
     /* read one scan line at a time */
-    while( cinfo.output_scanline < cinfo.image_height )
-    {
-        jpeg_read_scanlines( &cinfo, row_pointer, 1 );
-        for( i=0; i<cinfo.image_width*cinfo.num_components;i++)
+    while (cinfo.output_scanline < cinfo.image_height) {
+        jpeg_read_scanlines(&cinfo, row_pointer, 1);
+        for (i = 0; i < cinfo.image_width * cinfo.num_components; i++)
             raw_image[location++] = row_pointer[0][i];
     }
 
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1,&textureColor);
+    glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-        // set the texture wrapping parameters
+    // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                     GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -426,23 +425,22 @@ void FlatMap::updateUniforms(GLuint shaderID){
     cameraStartPosition = cameraPosition;
     glGenerateMipmap(GL_TEXTURE_2D);
 
-     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
+    glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
 
     glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
     /* wrap up decompression, destroy objects, free pointers and close open files */
-    jpeg_finish_decompress( &cinfo );
-    jpeg_destroy_decompress( &cinfo );
-    free( row_pointer[0] );
-    free( raw_image );
-    fclose( infile );
+    jpeg_finish_decompress(&cinfo);
+    jpeg_destroy_decompress(&cinfo);
+    free(row_pointer[0]);
+    free(raw_image);
+    fclose(infile);
 
 }
 
-void FlatMap::initGreyTexture(const char *filename, GLuint shader)
-{
+void FlatMap::initGreyTexture(const char *filename, GLuint shader) {
 
-     glGenTextures(1, &textureGrey);
+    glGenTextures(1, &textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
@@ -464,48 +462,46 @@ void FlatMap::initGreyTexture(const char *filename, GLuint shader)
     /* libjpeg data structure for storing one row, that is, scanline of an image */
     JSAMPROW row_pointer[1];
 
-    FILE *infile = fopen( filename, "rb" );
+    FILE *infile = fopen(filename, "rb");
     unsigned long location = 0;
     int i = 0, j = 0;
 
-    if ( !infile )
-    {
-        printf("Error opening jpeg file %s\n!", filename );
+    if (!infile) {
+        printf("Error opening jpeg file %s\n!", filename);
         return;
     }
-    printf("Texture filename = %s\n",filename);
+    printf("Texture filename = %s\n", filename);
 
     /* here we set up the standard libjpeg error handler */
-    cinfo.err = jpeg_std_error( &jerr );
+    cinfo.err = jpeg_std_error(&jerr);
     /* setup decompression process and source, then read JPEG header */
-    jpeg_create_decompress( &cinfo );
+    jpeg_create_decompress(&cinfo);
     /* this makes the library read from infile */
-    jpeg_stdio_src( &cinfo, infile );
+    jpeg_stdio_src(&cinfo, infile);
     /* reading the image header which contains image information */
-    jpeg_read_header( &cinfo, TRUE );
+    jpeg_read_header(&cinfo, TRUE);
     /* Start decompression jpeg here */
-    jpeg_start_decompress( &cinfo );
+    jpeg_start_decompress(&cinfo);
 
     /* allocate memory to hold the uncompressed image */
-    raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
+    raw_image = (unsigned char *) malloc(cinfo.output_width * cinfo.output_height * cinfo.num_components);
     /* now actually read the jpeg into the raw buffer */
-    row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
+    row_pointer[0] = (unsigned char *) malloc(cinfo.output_width * cinfo.num_components);
     /* read one scan line at a time */
-    while( cinfo.output_scanline < cinfo.image_height )
-    {
-        jpeg_read_scanlines( &cinfo, row_pointer, 1 );
-        for( i=0; i<cinfo.image_width*cinfo.num_components;i++)
+    while (cinfo.output_scanline < cinfo.image_height) {
+        jpeg_read_scanlines(&cinfo, row_pointer, 1);
+        for (i = 0; i < cinfo.image_width * cinfo.num_components; i++)
             raw_image[location++] = row_pointer[0][i];
     }
 
     height = cinfo.image_height;
     width = cinfo.image_width;
-    
-    glGenTextures(1,&textureGrey);
+
+    glGenTextures(1, &textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);
     glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-        // set the texture wrapping parameters
+    // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                     GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -518,15 +514,15 @@ void FlatMap::initGreyTexture(const char *filename, GLuint shader)
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
+    glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
 
     glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
     /* wrap up decompression, destroy objects, free pointers and close open files */
-    jpeg_finish_decompress( &cinfo );
-    jpeg_destroy_decompress( &cinfo );
-    free( row_pointer[0] );
-    free( raw_image );
-    fclose( infile );
+    jpeg_finish_decompress(&cinfo);
+    jpeg_destroy_decompress(&cinfo);
+    free(row_pointer[0]);
+    free(raw_image);
+    fclose(infile);
 
 }

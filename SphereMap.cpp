@@ -63,16 +63,19 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
         }
     }
 
-    for (int i = 0; i < verticalSplitCount; i++) {
+    for (int i = 0; i < verticalSplitCount - 1; i++) {
         int offset = 0;
         for (int j = 0; j < horizontalSplitCount; j++) {
-            indices.push_back(i * (horizontalSplitCount + 1) + offset);
-            indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
-            indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
-
-            indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
-            indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
-            indices.push_back((i + 1) * (horizontalSplitCount + 1) + 1 + offset);
+            if (i != 0) {
+                indices.push_back(i * (horizontalSplitCount + 1) + offset);
+                indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
+                indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
+            }
+            if (i != verticalSplitCount - 2) {
+                indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
+                indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
+                indices.push_back((i + 1) * (horizontalSplitCount + 1) + 1 + offset);
+            }
             offset++;
         }
     }

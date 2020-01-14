@@ -44,18 +44,17 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
             float sectorAngle = 2 * PI * (float) horizontalStep / horizontalSplitCount;
 
             float z = radius * cosf(stackAngle);
-            float y = radius * sinf(stackAngle) * sinf(sectorAngle);
-            float x = radius * sinf(stackAngle) * cosf(sectorAngle);
-            vertices.push_back(x);
-            vertices.push_back(y);
             vertices.push_back(z);
-
-            // normalized vertex normal (nx, ny, nz)
-            normals.push_back(x * (1 / radius));
-            normals.push_back(y * (1 / radius));
             normals.push_back(z * (1 / radius));
 
-            // vertex tex coord (s, t) range between [0, 1]
+            float y = radius * sinf(stackAngle) * sinf(sectorAngle);
+            vertices.push_back(y);
+            normals.push_back(y * (1 / radius));
+
+            float x = radius * sinf(stackAngle) * cosf(sectorAngle);
+            vertices.push_back(x);
+            normals.push_back(x * (1 / radius));
+
             texCoords.push_back((float) horizontalStep / horizontalSplitCount);
             texCoords.push_back((float) verticalStep / verticalSplitCount);
         }

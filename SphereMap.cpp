@@ -36,21 +36,19 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
     setText(shaderID);
 //---------------------------------------
     // Set Vertices
-    for(int i = 0; i <= stackCount; ++i)
+    for(int verticalStep = 0; verticalStep <= verticalSplitCount; ++verticalStep)
     {
-        float stackAngle =i * PI / stackCount;        // starting from pi/2 to -pi/2
-        float xy = radius * sinf(stackAngle);             // r * cos(u)
+        float stackAngle = verticalStep * PI / verticalSplitCount;
         float z = radius * cosf(stackAngle);              // r * sin(u)
 
-        // add (sectorCount+1) vertices per stack
+        // add (horizontalSplitCount+1) vertices per stack
         // the first and last vertices have same position and normal, but different tex coords
-        for(int j = 0; j <= sectorCount; ++j)
+        for(int horizontalStep = 0; horizontalStep <= horizontalSplitCount; ++horizontalStep)
         {
-            float sectorAngle = j * 2 *  PI / sectorCount;           // starting from 0 to 2pi
+            float sectorAngle = horizontalStep * 2 * PI / horizontalSplitCount;           // starting from 0 to 2pi
 
-            // vertex position (x, y, z)
-           float x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
-           float y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
+           float x = radius * sinf(stackAngle) * cosf(sectorAngle);             // r * cos(u) * cos(v)
+           float y = radius * sinf(stackAngle) * sinf(sectorAngle);             // r * cos(u) * sin(v)
             vertices.push_back(x);
             vertices.push_back(y);
             vertices.push_back(z);
@@ -61,17 +59,17 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
             normals.push_back(z * (1 / radius));
 
             // vertex tex coord (s, t) range between [0, 1]
-            texCoords.push_back((float)j / sectorCount);
-            texCoords.push_back((float)i / stackCount);
+            texCoords.push_back((float)horizontalStep / horizontalSplitCount);
+            texCoords.push_back((float)verticalStep / verticalSplitCount);
         }
     }
 
-    for(int i = 0; i < stackCount; ++i)
+    for(int i = 0; i < verticalSplitCount; ++i)
     {
-        int k1 = i * (sectorCount + 1);     // beginning of current stack
-        int k2 = k1 + sectorCount + 1;      // beginning of next stack
+        int k1 = i * (horizontalSplitCount + 1);     // beginning of current stack
+        int k2 = k1 + horizontalSplitCount + 1;      // beginning of next stack
 
-        for(int j = 0; j < sectorCount; ++j, ++k1, ++k2)
+        for(int j = 0; j < horizontalSplitCount; ++j, ++k1, ++k2)
         {
             // 2 triangles per sector excluding first and last stacks
             // k1 => k2 => k1+1
@@ -83,7 +81,7 @@ void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePat
             }
 
             // k1+1 => k2 => k2+1
-            if(i != (stackCount-1))
+            if(i != (verticalSplitCount - 1))
             {
                 indices.push_back(k1 + 1);
                 indices.push_back(k2);
@@ -262,11 +260,11 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 //        cout << "Key Press: Q" << endl;
-        textureOffset -= 1.0/sectorCount;
+        textureOffset -= 1.0 / horizontalSplitCount;
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 //        cout << "Key Press: E" << endl;
-        textureOffset += 1.0/sectorCount;
+        textureOffset += 1.0 / horizontalSplitCount;
     }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {

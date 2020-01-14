@@ -1,12 +1,4 @@
-// Include GLM
-
-
 #include "SphereMap.h"
-
-
-
-
-#include "stb_image.h"
 
 
 using namespace std;
@@ -365,69 +357,6 @@ GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height)
     glClearColor(0, 0,0, 0);
 
     return window;
-}
-
-void SphereMap::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
-    glGenTextures(1, &textureColor);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    int width, height, nrChannels;
-    int stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    cout<< filenameColored<< " " << filenameGray<< endl;
-    unsigned char *dataColored = stbi_load(filenameColored, &width, &height, &nrChannels, 0);
-
-    if (dataColored) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataColored);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        imageWidth = width;
-        imageHeight = height;
-        cout << "Texture width: " << width << " height: " << height << endl;
-        // Init light position right after obtaining image width/height
-       
-
-
-    }
-    else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-    stbi_image_free(dataColored);
-    glGenTextures(1, &textureGrey);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-    unsigned char *dataGray = stbi_load(filenameGray, &width, &height, &nrChannels, 0);
-    if (dataGray) {
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataGray);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-
-    }
-    else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    glUseProgram(shaderID); // don't forget to activate/use the shader before setting uniforms!
-    // either set it manually like so:
-    glUniform1i(glGetUniformLocation(shaderID, "TexColor"), 0);
-    glUniform1i(glGetUniformLocation(shaderID, "TexGrey"), 1);
-
-    stbi_image_free(dataGray);
-
 }
 
 

@@ -37,11 +37,7 @@ private:
     float aspectRatio = 1;
     float near = 0.1;
     float far = 10000;
-    float startPitch = 0;
-    float startYaw = 90;
     float startSpeed = 0;
-    float pitch = startPitch;
-    float yaw = startYaw;
     float speed = startSpeed;
     glm::vec3 cameraStartPosition = glm::vec3(0, 100, 0);
     glm::vec3 cameraStartDirection = glm::vec3(0, 0, 1);
@@ -59,30 +55,18 @@ public:
 
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
-    void setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID);
-
     void Render(const char *coloredTexturePath,const char *greyTexturePath);
-
-    static glm::vec3 calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 
     void updateCamera(GLuint shaderID);
 
-    glm::vec3 getPosition(float *vertices, int i);
-
-    void setNormal(float *vertices, int i, glm::vec3 normal);
-
     void handleKeyPress(GLFWwindow *window);
-
-    void setCameraDirection();
-
-    void printVec3(glm::vec3 vec);
 
     void updateUniforms(GLuint shaderID);
 
-    void setText(GLuint shader);
     
-   void initTexture(const char *filename,GLuint shader);
-   void initTextureGrey(const char *filename,GLuint shader);
+   void initColoredTexture(const char *filename, GLuint shader);
+
+   void initGreyTexture(const char *filename, GLuint shader);
 };
 
 #endif

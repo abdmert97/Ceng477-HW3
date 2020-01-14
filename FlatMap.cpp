@@ -1,17 +1,6 @@
-// Include GLM
-
-
 #include "FlatMap.h"
 
-
-#define STB_IMAGE_IMPLEMENTATION
-
-#include "stb_image.h"
-
-
 using namespace std;
-
-
 
 struct vertex {
     glm::vec3 position;
@@ -46,9 +35,8 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
     // Set Texture
     //const char *coloredTexturePath = "normal_earth_mini.jpg";
     //const char *greyTexturePath = "height_gray_mini.jpg";
-    //setTexture(coloredTexturePath, greyTexturePath, shaderID);
-    initTexture(coloredTexturePath,shaderID);
-    initTextureGrey(greyTexturePath,shaderID);
+    initColoredTexture(coloredTexturePath, shaderID);
+    initGreyTexture(greyTexturePath, shaderID);
  
     // Initialize data structures
     vector<vertex> vertices(imageWidth * imageHeight);      // Four vertices for every pixel
@@ -313,72 +301,6 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     return window;
 }
 
-void FlatMap::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
-    glGenTextures(1, &textureColor);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    int width, height, nrChannels;
-    int stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    cout << filenameColored << " " << filenameGray << endl;
-    unsigned char *dataColored = stbi_load(filenameColored, &width, &height, &nrChannels, 0);
-
-    if (dataColored) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataColored);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        imageWidth = width;
-        imageHeight = height;
-        cout << "Texture width: " << width << " height: " << height << endl;
-        // Init light position right after obtaining image width/height
-        lightPos = glm::vec3(imageWidth / 2.0f, 100, imageHeight / 2.0f);
-        cameraPosition = glm::vec3(imageWidth / 2.0f, imageWidth / 10.0f, -imageWidth / 4.0f);
-
-        cameraStartPosition = cameraPosition;
-
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-
-    stbi_image_free(dataColored);
-    glGenTextures(1, &textureGrey);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-    unsigned char *dataGray = stbi_load(filenameGray, &width, &height, &nrChannels, 0);
-    if (dataGray) {
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataGray);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-
-    } else {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    glUseProgram(shaderID); // don't forget to activate/use the shader before setting uniforms!
-    // either set it manually like so:
-    glUniform1i(glGetUniformLocation(shaderID, "TexColor"), 0);
-    glUniform1i(glGetUniformLocation(shaderID, "TexGrey"), 1);
-
-    stbi_image_free(dataGray);
-
-}
-
-
 
 void FlatMap::updateCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
@@ -426,15 +348,7 @@ void FlatMap::updateUniforms(GLuint shaderID){
 }
 
 
-void FlatMap::setText(GLuint shader)
-{
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    glActiveTexture(GL_TEXTURE1);
-     glBindTexture(GL_TEXTURE_2D, textureGrey);
- 
-}
- void FlatMap::initTexture(const char *filename,GLuint shader)
+ void FlatMap::initColoredTexture(const char *filename, GLuint shader)
 {
     int width, height;
     glGenTextures(1, &textureColor);
@@ -527,7 +441,7 @@ void FlatMap::setText(GLuint shader)
 
 }
 
-void FlatMap::initTextureGrey(const char *filename,GLuint shader)
+void FlatMap::initGreyTexture(const char *filename, GLuint shader)
 {
 
      glGenTextures(1, &textureGrey);

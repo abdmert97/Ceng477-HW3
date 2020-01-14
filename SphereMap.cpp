@@ -221,22 +221,22 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         cout << "Key Press: W" << endl;
         glm::vec3 cameraLeft = glm::cross(cameraDirection, cameraUp);
-        cameraUp = glm::rotate(cameraUp, 0.05f, cameraLeft);
-        cameraDirection = glm::rotate(cameraDirection, 0.05f, cameraLeft);
+        cameraUp = glm::rotate(cameraUp, 0.01f, cameraLeft);
+        cameraDirection = glm::rotate(cameraDirection, 0.01f, cameraLeft);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         cout << "Key Press: S" << endl;
         glm::vec3 cameraLeft = glm::cross(cameraDirection, cameraUp);
-        cameraUp = glm::rotate(cameraUp, -0.05f, cameraLeft);
-        cameraDirection = glm::rotate(cameraDirection, -0.05f, cameraLeft);
+        cameraUp = glm::rotate(cameraUp, -0.01f, cameraLeft);
+        cameraDirection = glm::rotate(cameraDirection, -0.01f, cameraLeft);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         cout << "Key Press: D" << endl;
-        cameraDirection = glm::rotate(cameraDirection, -0.05f, cameraUp);
+        cameraDirection = glm::rotate(cameraDirection, -0.01f, cameraUp);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         cout << "Key Press: A" << endl;
-        cameraDirection = glm::rotate(cameraDirection, 0.05f, cameraUp);
+        cameraDirection = glm::rotate(cameraDirection, 0.01f, cameraUp);
     }
 
 

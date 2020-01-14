@@ -30,18 +30,13 @@ vec3 diffuseLightColor =vec3(1.0f);
 void light(int lightIndex, vec3 position, vec3 norm, out vec3 ambient, out vec3 diffuse, out vec3 spec)
 {
 
-    vec3 n = normalize(norm);
-    vec3 s = normalize(LightVector);
-
-    vec3 camera = CameraVector;
-    vec3 light = LightVector;
-    vec3 h = normalize(camera + light);
+    vec3 normalVector = normalize(norm);
 
 
-    vec3 reflect = reflect(-LightVector, n);
+    vec3 reflect = reflect(-LightVector, normalVector);
 
     float cos_alpha = max(dot(CameraVector, reflect), 0);
-    float cos_theta = max(dot(n, LightVector), 0);
+    float cos_theta = max(dot(normalVector, LightVector), 0);
 
 
     // compute ambient component

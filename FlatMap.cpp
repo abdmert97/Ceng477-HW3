@@ -62,7 +62,6 @@ void FlatMap::Render() {
         }
     }
 
-    //TODO: en sağdakinin bir sağı kayıyor olabilir
     cout << (imageWidth) * (imageHeight) << endl;
     int a = 0;
     for (int i = 0; i < imageHeight - 1; i++) {
@@ -269,15 +268,6 @@ void FlatMap::handleKeyPress(GLFWwindow *window) {
     }
 }
 
-// TODO: doruktan alindi yeniden yazilmali!!!
-void FlatMap::setCameraDirection() {
-    glm::vec3 front;
-    front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-    front.y = sin(glm::radians(this->pitch));
-    front.z = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-    this->cameraDirection = glm::normalize(front);
-}
-
 
 GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     GLFWwindow *window;
@@ -445,20 +435,3 @@ void FlatMap::initCamera(GLuint shaderID) {
     glUniform1f(textureOffset, this->textureOffset);
 }
 
-void FlatMap::printVec3(glm::vec3 vec) {
-    cout << "Vector : " << vec.x << " " << " " << vec.y << " " << vec.z << endl;
-}
-
-glm::vec3 FlatMap::getPosition(float *vertices, int i) {
-    return glm::vec3(vertices[8 * i], vertices[8 * i + 1], vertices[8 * i + 2]);
-}
-
-
-void FlatMap::setNormal(float *vertices, int i, glm::vec3 normal) {
-    vertices[8 * i + 3] = normal.x;
-    vertices[8 * i + 4] = normal.y;
-    vertices[8 * i + 5] = normal.z;
-    /*   cout<< vertices[8*i+3]<< " "<<
-       vertices[8*i+4]<< " "<<
-       vertices[8*i+5]<< " "<<endl;*/
-}

@@ -331,16 +331,6 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     }
 }
 
-// TODO: doruktan alindi yeniden yazilmali!!!
-void SphereMap::setCameraDirection() {
-    glm::vec3 front;
-    front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-    front.y = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
-    front.z = sin(glm::radians(this->pitch));
-
-    this->cameraDirection = glm::normalize(front);
-}
-
 
 GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height) {
     GLFWwindow *window;
@@ -507,22 +497,4 @@ void SphereMap::initCamera(GLuint shaderID) {
     glUniform1f(textureOffset, this->textureOffset);
 
 
-}
-
-void SphereMap::printVec3(glm::vec3 vec) {
-    cout << "Vector : " << vec.x << " " << " " << vec.y << " " << vec.z << endl;
-}
-
-glm::vec3 SphereMap::getPosition(float *vertices, int i) {
-    return glm::vec3(vertices[8 * i], vertices[8 * i + 1], vertices[8 * i + 2]);
-}
-
-
-void SphereMap::setNormal(float *vertices, int i, glm::vec3 normal) {
-    vertices[8 * i + 3] = normal.x;
-    vertices[8 * i + 4] = normal.y;
-    vertices[8 * i + 5] = normal.z;
-    /*   cout<< vertices[8*i+3]<< " "<<
-       vertices[8*i+4]<< " "<<
-       vertices[8*i+5]<< " "<<endl;*/
 }

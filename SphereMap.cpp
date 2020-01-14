@@ -256,11 +256,11 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 //        cout << "Key Press: ->" << endl;
-        lightPos.x += 5;
+        lightPos.x -= 5;
     }
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 //        cout << "Key Press: <-" << endl;
-        lightPos.x -= 5;
+        lightPos.x += 5;
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 //        cout << "Key Press: ^" << endl;

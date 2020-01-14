@@ -43,20 +43,20 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
         for (int horizontalStep = 0; horizontalStep <= horizontalSplitCount; ++horizontalStep) {
             float sectorAngle = 2 * PI * (float) horizontalStep / horizontalSplitCount;
 
-            float z = radius * cosf(stackAngle);
-            vertices.push_back(z);
-            normals.push_back(z * (1 / radius));
-
-            float y = radius * sinf(stackAngle) * sinf(sectorAngle);
-            vertices.push_back(y);
-            normals.push_back(y * (1 / radius));
-
             float x = radius * sinf(stackAngle) * cosf(sectorAngle);
-            vertices.push_back(x);
-            normals.push_back(x * (1 / radius));
+            interleavedVertices.push_back(x);
+            float y = radius * sinf(stackAngle) * sinf(sectorAngle);
+            interleavedVertices.push_back(y);
+            float z = radius * cosf(stackAngle);
+            interleavedVertices.push_back(z);
+            interleavedVertices.push_back(y * (1 / radius));
+            interleavedVertices.push_back(x * (1 / radius));
+            interleavedVertices.push_back(z * (1 / radius));
 
-            texCoords.push_back((float) horizontalStep / horizontalSplitCount);
-            texCoords.push_back((float) verticalStep / verticalSplitCount);
+
+
+            interleavedVertices.push_back((float) horizontalStep / horizontalSplitCount);
+            interleavedVertices.push_back((float) verticalStep / verticalSplitCount);
         }
     }
 
@@ -81,22 +81,21 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
             }
         }
     }
-    std::vector<float>().swap(interleavedVertices);
-
-    std::size_t i, j;
-    std::size_t count = vertices.size();
-    for (i = 0, j = 0; i < count; i += 3, j += 2) {
-        interleavedVertices.push_back(vertices[i + 2]);
-        interleavedVertices.push_back(vertices[i + 1]);
-        interleavedVertices.push_back(vertices[i]);
-
-        interleavedVertices.push_back(normals[i + 2]);
-        interleavedVertices.push_back(normals[i + 1]);
-        interleavedVertices.push_back(normals[i]);
-
-        interleavedVertices.push_back(texCoords[j]);
-        interleavedVertices.push_back(texCoords[j + 1]);
-    }
+//
+//    std::size_t i, j;
+//    std::size_t count = vertices.size();
+//    for (int i = 0, j = 0; i < count; i += 3, j += 2) {
+//        interleavedVertices.push_back(vertices[i + 2]);
+//        interleavedVertices.push_back(vertices[i + 1]);
+//        interleavedVertices.push_back(vertices[i]);
+//
+//        interleavedVertices.push_back(normals[i + 2]);
+//        interleavedVertices.push_back(normals[i + 1]);
+//        interleavedVertices.push_back(normals[i]);
+//
+//        interleavedVertices.push_back(texCoords[j]);
+//        interleavedVertices.push_back(texCoords[j + 1]);
+//    }
 //---------------------------------------
 
 

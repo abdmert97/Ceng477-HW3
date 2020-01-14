@@ -103,7 +103,7 @@ void FlatMap::Render(const char *coloredTexturePath, const char *greyTexturePath
         glViewport(0, 0, screenWidth, screenHeight);
         glClearStencil(0);
         glClearDepth(1.0f);
-        glClearColor(0.2, 0.3, 0.2, 1);
+        glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Update camera at every frame

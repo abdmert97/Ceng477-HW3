@@ -28,22 +28,16 @@ out Data
 } data;
 
 
-out vec3 LightVector;// Vector from Vertex to Light;
-out vec3 CameraVector;// Vector from Vertex to Camera;
+out vec3 LightVector;
+out vec3 CameraVector;
 
-void main()
-{
-    vec4 texColor = texture(TexGrey, vec2(mod(textureOffset+ VertexTex.x, 1.0), VertexTex.y));
-    vec3 newPosition = VertexPosition;
-    newPosition.y = heightFactor * texColor.x;
-
-
-    vec3 adjacentVertex1 = newPosition + vec3(-1, 0, 0);
-    vec3 adjacentVertex2 = newPosition + vec3(-1, 0, 1);
-    vec3 adjacentVertex3 = newPosition + vec3(0, 0, 1);
-    vec3 adjacentVertex4 = newPosition + vec3(1, 0, 0);
-    vec3 adjacentVertex5 = newPosition + vec3(1, 0, -1);
-    vec3 adjacentVertex6 = newPosition + vec3(0, 0, -1);
+void calculateAverageNormal(vec3 elevatedPosition, out vec3 averageNormal){
+    vec3 adjacentVertex1 = elevatedPosition + vec3(-1, 0, 0);
+    vec3 adjacentVertex2 = elevatedPosition + vec3(-1, 0, 1);
+    vec3 adjacentVertex3 = elevatedPosition + vec3(0, 0, 1);
+    vec3 adjacentVertex4 = elevatedPosition + vec3(1, 0, 0);
+    vec3 adjacentVertex5 = elevatedPosition + vec3(1, 0, -1);
+    vec3 adjacentVertex6 = elevatedPosition + vec3(0, 0, -1);
 
     vec4 texColor1 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex1.x)/imageWidth, 1.0), 1- (adjacentVertex1.z)/imageHeight));
     vec4 texColor2 = texture(TexGrey, vec2(mod(textureOffset+1-(adjacentVertex2.x)/imageWidth, 1.0), 1- (adjacentVertex2.z)/imageHeight));
@@ -59,22 +53,33 @@ void main()
     adjacentVertex5.y = heightFactor * texColor5.x;
     adjacentVertex6.y = heightFactor * texColor6.x;
 
-    vec3 normal1 = cross((adjacentVertex1 - newPosition), (newPosition - adjacentVertex2));
-    vec3 normal2 = cross((adjacentVertex2 - newPosition), (newPosition - adjacentVertex3));
-    vec3 normal3 = cross((adjacentVertex3 - newPosition), (newPosition - adjacentVertex4));
-    vec3 normal4 = cross((adjacentVertex4 - newPosition), (newPosition - adjacentVertex5));
-    vec3 normal5 = cross((adjacentVertex5 - newPosition), (newPosition - adjacentVertex6));
-    vec3 normal6 = cross((adjacentVertex6 - newPosition), (newPosition - adjacentVertex1));
+    vec3 normal1 = cross((adjacentVertex1 - elevatedPosition), (elevatedPosition - adjacentVertex2));
+    vec3 normal2 = cross((adjacentVertex2 - elevatedPosition), (elevatedPosition - adjacentVertex3));
+    vec3 normal3 = cross((adjacentVertex3 - elevatedPosition), (elevatedPosition - adjacentVertex4));
+    vec3 normal4 = cross((adjacentVertex4 - elevatedPosition), (elevatedPosition - adjacentVertex5));
+    vec3 normal5 = cross((adjacentVertex5 - elevatedPosition), (elevatedPosition - adjacentVertex6));
+    vec3 normal6 = cross((adjacentVertex6 - elevatedPosition), (elevatedPosition - adjacentVertex1));
 
-    vec3 averageNormal = normalize(normal1 + normal2 + normal3 + normal4 + normal5 + normal6);
+    averageNormal = normalize(normal1 + normal2 + normal3 + normal4 + normal5 + normal6);
+}
+
+void main()
+{
+    vec4 texColor = texture(TexGrey, vec2(mod(textureOffset+ VertexTex.x, 1.0), VertexTex.y));
+    vec3 elevatedPosition = VertexPosition;
+    elevatedPosition.y = heightFactor * texColor.x;
+
+    vec3 averageNormal = vec3(0f);
+
+    calculateAverageNormal(elevatedPosition, averageNormal);
 
     data.Normal = vec3(normalize(vec3(NormalMatrix * vec4(averageNormal, 0))));
-    data.Position = vec3(ViewMatrix * vec4(newPosition, 1));
+    data.Position = vec3(ViewMatrix * vec4(elevatedPosition, 1));
     data.TexCoord = vec2(VertexTex.x, VertexTex.y);
 
     CameraVector = normalize(vec3(ViewMatrix*vec4(cameraPosition,1)) - data.Position);
     LightVector = normalize(vec3(ViewMatrix*vec4(lightPosition,1))  - data.Position);
 
 
-    gl_Position = MVP* vec4(newPosition, 1);
+    gl_Position = MVP* vec4(elevatedPosition, 1);
 }

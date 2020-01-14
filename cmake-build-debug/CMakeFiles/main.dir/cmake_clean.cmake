@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/FlatMap.cpp.obj"
   "CMakeFiles/main.dir/Main.cpp.obj"
-  "CMakeFiles/main.dir/Opengl.cpp.obj"
   "CMakeFiles/main.dir/Shader.cpp.obj"
-  "CMakeFiles/main.dir/Sphere.cpp.obj"
+  "CMakeFiles/main.dir/SphereMap.cpp.obj"
   "main.exe"
   "main.exe.manifest"
   "main.lib"

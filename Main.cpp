@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Sphere.h"
+#include "SphereMap.h"
 using namespace std;
 
 
 int main(int argc, char* argv[])
 {
-    Sphere *openGL = new Sphere();
+    SphereMap *openGL = new SphereMap();
 	openGL->Render();
 	
 }

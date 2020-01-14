@@ -1,7 +1,7 @@
 // Include GLM
 
 
-#include "OpenGL.h"
+#include "FlatMap.h"
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -36,12 +36,12 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void OpenGL::Render() {
+void FlatMap::Render() {
     // Open window
     window = openWindow(windowName, screenWidth, screenHeight);
 
     // Create and compile our GLSL program from the shaders
-    GLuint shader = LoadShaders("../shader.vert", "../shader.frag");
+    GLuint shader = LoadShaders("../flatShader.vert", "../flatShader.frag");
 
     // Set Texture
     const char *nameColor = "../normal_earth_mini.jpg";
@@ -144,11 +144,11 @@ void OpenGL::Render() {
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shader);
 
-    // Close OpenGL window and terminate GLFW
+    // Close FlatMap window and terminate GLFW
     glfwTerminate();
 }
 
-void OpenGL::handleKeyPress(GLFWwindow *window) {
+void FlatMap::handleKeyPress(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         cout << "Key Press: ESC" << endl;
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -270,7 +270,7 @@ void OpenGL::handleKeyPress(GLFWwindow *window) {
 }
 
 // TODO: doruktan alindi yeniden yazilmali!!!
-void OpenGL::setCameraDirection() {
+void FlatMap::setCameraDirection() {
     glm::vec3 front;
     front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
     front.y = sin(glm::radians(this->pitch));
@@ -279,7 +279,7 @@ void OpenGL::setCameraDirection() {
 }
 
 
-GLFWwindow *OpenGL::openWindow(const char *windowName, int width, int height) {
+GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     GLFWwindow *window;
     // Initialise GLFW
     if (!glfwInit()) {
@@ -294,7 +294,7 @@ GLFWwindow *OpenGL::openWindow(const char *windowName, int width, int height) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Open a window and create its OpenGL context
+    // Open a window and create its FlatMap context
     window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
     if (window == NULL) {
@@ -323,7 +323,7 @@ GLFWwindow *OpenGL::openWindow(const char *windowName, int width, int height) {
     return window;
 }
 
-void OpenGL::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
+void FlatMap::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     // set the texture wrapping parameters
@@ -389,7 +389,7 @@ void OpenGL::setTexture(const char *filenameColored, const char *filenameGray, G
 }
 
 
-glm::vec3 OpenGL::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
+glm::vec3 FlatMap::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
     glm::vec3 N = glm::cross((v1 - v2), (v1 - v3)); //perform cross product of two lines on plane
 
     if (glm::length(N) > 0) {
@@ -399,7 +399,7 @@ glm::vec3 OpenGL::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
 }
 
 
-void OpenGL::initCamera(GLuint shaderID) {
+void FlatMap::initCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
     glm::mat4 M_projection = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
     glm::mat4 M_view = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
@@ -445,16 +445,16 @@ void OpenGL::initCamera(GLuint shaderID) {
     glUniform1f(textureOffset, this->textureOffset);
 }
 
-void OpenGL::printVec3(glm::vec3 vec) {
+void FlatMap::printVec3(glm::vec3 vec) {
     cout << "Vector : " << vec.x << " " << " " << vec.y << " " << vec.z << endl;
 }
 
-glm::vec3 OpenGL::getPosition(float *vertices, int i) {
+glm::vec3 FlatMap::getPosition(float *vertices, int i) {
     return glm::vec3(vertices[8 * i], vertices[8 * i + 1], vertices[8 * i + 2]);
 }
 
 
-void OpenGL::setNormal(float *vertices, int i, glm::vec3 normal) {
+void FlatMap::setNormal(float *vertices, int i, glm::vec3 normal) {
     vertices[8 * i + 3] = normal.x;
     vertices[8 * i + 4] = normal.y;
     vertices[8 * i + 5] = normal.z;

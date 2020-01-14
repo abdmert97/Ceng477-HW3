@@ -1,7 +1,7 @@
 // Include GLM
 
 
-#include "Sphere.h"
+#include "SphereMap.h"
 
 
 
@@ -36,13 +36,13 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void Sphere::Render() {
+void SphereMap::Render() {
     // Open window
     GLFWwindow *window;
     window = openWindow(windowName, screenWidth, screenHeight);
 
     // Create and compile our GLSL program from the shaders
-    GLuint shader = LoadShaders("../Sphere.vert", "../Sphere.frag");
+    GLuint shader = LoadShaders("../sphereShader.vert", "../sphereShader.frag");
 
     // Set Texture
     const char *nameColor = "../normal_earth_med.jpg";
@@ -50,24 +50,6 @@ void Sphere::Render() {
     setTexture(nameColor,nameGrey, shader);
 
     // Set Vertices
-    float vertices2[] = {
-            // positions         // normal           // texture coords
-            0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-            0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom left
-            -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // top left
-    };
-    float right = imageWidth / 2;
-    float top = imageHeight / 2;
-    /*float vertices[] = {
-            right, 0.0f, top, .0f, 0.0f, 0.0f, 0.0f, 1.0f, // top right
-            right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
-            -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top left
-
-            right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
-            -right, 0.0f, -top, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
-            -right, 0.0f, top, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f  // top left
-    };*/
     float x, y, z, xy;                              // vertex position
     float nx, ny, nz, lengthInv = 1.0f / radius;    // vertex normal
     float s, t;                                     // vertex texCoord
@@ -195,7 +177,7 @@ void Sphere::Render() {
 
         glClearStencil(0);
         glClearDepth(1.0f);
-        glClearColor(0.2, 0.3, 0.2, 1);
+        glClearColor(0, 0, 0, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         initCamera(shader);
 
@@ -225,11 +207,11 @@ void Sphere::Render() {
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shader);
 
-    // Close OpenGL window and terminate GLFW
+    // Close FlatMap window and terminate GLFW
     glfwTerminate();
 }
 
-void Sphere::handleKeyPress(GLFWwindow *window) {
+void SphereMap::handleKeyPress(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         cout << "Key Press: ESC" << endl;
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -350,7 +332,7 @@ void Sphere::handleKeyPress(GLFWwindow *window) {
 }
 
 // TODO: doruktan alindi yeniden yazilmali!!!
-void Sphere::setCameraDirection() {
+void SphereMap::setCameraDirection() {
     glm::vec3 front;
     front.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
     front.y = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
@@ -360,7 +342,7 @@ void Sphere::setCameraDirection() {
 }
 
 
-GLFWwindow *Sphere::openWindow(const char *windowName, int width, int height) {
+GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height) {
     GLFWwindow *window;
     // Initialise GLFW
     if (!glfwInit()) {
@@ -375,7 +357,7 @@ GLFWwindow *Sphere::openWindow(const char *windowName, int width, int height) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Open a window and create its OpenGL context
+    // Open a window and create its FlatMap context
     window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
     if (window == NULL) {
@@ -404,7 +386,7 @@ GLFWwindow *Sphere::openWindow(const char *windowName, int width, int height) {
     return window;
 }
 
-void Sphere::setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID) {
+void SphereMap::setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID) {
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     // set the texture wrapping parameters
@@ -468,7 +450,7 @@ void Sphere::setTexture(const char *filenameColored,const char *filenameGray, GL
 }
 
 
-glm::vec3 Sphere::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
+glm::vec3 SphereMap::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
     glm::vec3 N = glm::cross((v1 - v2), (v1 - v3)); //perform cross product of two lines on plane
 
     if (glm::length(N) > 0) {
@@ -478,7 +460,7 @@ glm::vec3 Sphere::calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3) {
 }
 
 
-void Sphere::initCamera(GLuint shaderID) {
+void SphereMap::initCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
     glm::mat4 M_projection = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
 
@@ -527,16 +509,16 @@ void Sphere::initCamera(GLuint shaderID) {
 
 }
 
-void Sphere::printVec3(glm::vec3 vec) {
+void SphereMap::printVec3(glm::vec3 vec) {
     cout << "Vector : " << vec.x << " " << " " << vec.y << " " << vec.z << endl;
 }
 
-glm::vec3 Sphere::getPosition(float *vertices, int i) {
+glm::vec3 SphereMap::getPosition(float *vertices, int i) {
     return glm::vec3(vertices[8 * i], vertices[8 * i + 1], vertices[8 * i + 2]);
 }
 
 
-void Sphere::setNormal(float *vertices, int i, glm::vec3 normal) {
+void SphereMap::setNormal(float *vertices, int i, glm::vec3 normal) {
     vertices[8 * i + 3] = normal.x;
     vertices[8 * i + 4] = normal.y;
     vertices[8 * i + 5] = normal.z;

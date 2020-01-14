@@ -4,11 +4,11 @@ project(hw3-test)
 # The main executable
 add_executable(main
         Main.cpp
-        OpenGL.h
-        Opengl.cpp
+        FlatMap.h
+        FlatMap.cpp
         Shader.hpp
         Shader.cpp
-        Sphere.h Sphere.cpp)
+        SphereMap.h SphereMap.cpp)
 
 set_property(TARGET main PROPERTY CXX_STANDARD 11)
 target_compile_options(main PRIVATE -Wall)

@@ -14,7 +14,7 @@
 using namespace std;
 
 
-class OpenGL {
+class FlatMap {
 private:
     float heightFactor = 10;
     float textureOffset = 0;

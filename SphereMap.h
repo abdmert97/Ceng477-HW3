@@ -14,7 +14,7 @@
 using namespace std;
 
 
-class Sphere {
+class SphereMap {
 private:
     float heightFactor = 0;
     float textureOffset = 0;

@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "glm/glm/ext.hpp"
-#include "Shader.hpp"
+#include "Shader.h"
 #include <vector>
 #include "glm/glm/glm.hpp"
 #include <GLFW/glfw3.h>

@@ -30,7 +30,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
-    GLuint shaderID = LoadShaders("sphereShader.vert", "sphereShader.frag");
+    GLuint shaderID = initShaders();
 
     initTexture(coloredTexturePath, shaderID);
     initTextureGrey(greyTexturePath, shaderID);
@@ -104,7 +104,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
-
+   
     // Main rendering loop
     do {
         glViewport(0, 0, screenWidth, screenHeight);

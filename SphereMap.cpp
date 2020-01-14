@@ -86,13 +86,13 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     std::size_t i, j;
     std::size_t count = vertices.size();
     for (i = 0, j = 0; i < count; i += 3, j += 2) {
-        interleavedVertices.push_back(vertices[i]);
-        interleavedVertices.push_back(vertices[i + 1]);
         interleavedVertices.push_back(vertices[i + 2]);
+        interleavedVertices.push_back(vertices[i + 1]);
+        interleavedVertices.push_back(vertices[i]);
 
-        interleavedVertices.push_back(normals[i]);
-        interleavedVertices.push_back(normals[i + 1]);
         interleavedVertices.push_back(normals[i + 2]);
+        interleavedVertices.push_back(normals[i + 1]);
+        interleavedVertices.push_back(normals[i]);
 
         interleavedVertices.push_back(texCoords[j]);
         interleavedVertices.push_back(texCoords[j + 1]);

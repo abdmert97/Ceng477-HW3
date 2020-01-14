@@ -45,8 +45,8 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
             float alpha = 2 * PI * (horizontalStep / horizontalSplitCount);
 
             // vertex position (x, y, z)
-            float y = sinf(beta) * sinf(alpha);             // r * cos(u) * sin(v)
-            float x = sinf(beta) * cosf(alpha);             // r * cos(u) * cos(v)
+            float y = radius * sinf(beta) * sinf(alpha);             // r * cos(u) * sin(v)
+            float x = radius * sinf(beta) * cosf(alpha);             // r * cos(u) * cos(v)
             vertices.push_back(x);
             vertices.push_back(y);
             vertices.push_back(z);

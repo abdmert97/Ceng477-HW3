@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #include <jpeglib.h>
 #include <GL/glew.h>
+
 #define PI 3.14159265359
 using namespace std;
 
@@ -43,7 +44,7 @@ private:
     float yaw = startYaw;
     float speed = startSpeed;
     glm::vec3 cameraStartPosition = glm::vec3(0, 600, 0);
-    glm::vec3 cameraStartDirection = glm::vec3(0, -1,0);
+    glm::vec3 cameraStartDirection = glm::vec3(0, -1, 0);
     glm::vec3 cameraStartUp = glm::vec3(0, 0, 1);
     glm::vec3 cameraUp = cameraStartUp;
     glm::vec3 cameraPosition = cameraStartPosition;
@@ -61,19 +62,19 @@ public:
 
     vector<float> vertices;
     vector<unsigned int> indices;
+
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
 
-    void Render(const char *coloredTexturePath,const char *greyTexturePath);
+    void Render(const char *coloredTexturePath, const char *greyTexturePath);
 
     void updateCamera(GLuint shaderID);
 
     void handleKeyPress(GLFWwindow *window);
 
-    void setText(GLuint shader);
-    
-    void initTexture(const char *filename,GLuint shader);
-   void initTextureGrey(const char *filename,GLuint shader);
+    void initColoredTexture(const char *filename, GLuint shader);
+
+    void initGreyTexture(const char *filename, GLuint shader);
 
     void updateUniforms(GLuint shaderID);
 };

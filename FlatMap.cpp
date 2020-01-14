@@ -30,11 +30,9 @@ void FlatMap::Render(const char *coloredTexturePath, const char *greyTexturePath
     GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
-    GLuint shaderID = LoadShaders("flatShader.vert", "flatShader.frag");
+    GLuint shaderID = initShaders();
 
     // Set Texture
-    //const char *coloredTexturePath = "normal_earth_mini.jpg";
-    //const char *greyTexturePath = "height_gray_mini.jpg";
     initColoredTexture(coloredTexturePath, shaderID);
     initGreyTexture(greyTexturePath, shaderID);
 

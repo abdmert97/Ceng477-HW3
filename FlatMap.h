@@ -62,7 +62,6 @@ public:
     void handleKeyPress(GLFWwindow *window);
 
     void updateUniforms(GLuint shaderID);
-
     
    void initColoredTexture(const char *filename, GLuint shader);
 

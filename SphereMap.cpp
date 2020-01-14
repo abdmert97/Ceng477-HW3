@@ -32,9 +32,8 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     // Load shaders
     GLuint shaderID = initShaders();
 
-    initTexture(coloredTexturePath, shaderID);
-    initTextureGrey(greyTexturePath, shaderID);
-    setText(shaderID);
+    initColoredTexture(coloredTexturePath, shaderID);
+    initGreyTexture(greyTexturePath, shaderID);
 
     // Set Vertices
     for (int verticalStep = 0; verticalStep <= verticalSplitCount; verticalStep++) {
@@ -104,7 +103,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
-   
+
     // Main rendering loop
     do {
         glViewport(0, 0, screenWidth, screenHeight);
@@ -272,7 +271,6 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     }
 }
 
-//---------------------------------------
 GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height) {
     if (!glfwInit()) {
         getchar();
@@ -307,7 +305,6 @@ GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height)
 
     return window;
 }
-//---------------------------------------
 
 void SphereMap::updateCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
@@ -354,18 +351,7 @@ void SphereMap::updateUniforms(GLuint shaderID) {
     glUniform1f(textureOffsetId, this->textureOffset);
 }
 
-void SphereMap::setText(GLuint shader) {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
-    glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
-    // either set it manually like so:
-    glUniform1i(glGetUniformLocation(shader, "TexColor"), 0);
-    glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
-}
-
-void SphereMap::initTexture(const char *filename, GLuint shader) {
+void SphereMap::initColoredTexture(const char *filename, GLuint shader) {
     int width, height;
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
@@ -453,7 +439,7 @@ void SphereMap::initTexture(const char *filename, GLuint shader) {
 
 }
 
-void SphereMap::initTextureGrey(const char *filename, GLuint shader) {
+void SphereMap::initGreyTexture(const char *filename, GLuint shader) {
 
     glGenTextures(1, &textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);

@@ -74,7 +74,7 @@ public:
 
     static glm::vec3 calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 
-    void initCamera(GLuint shaderID);
+    void updateCamera(GLuint shaderID);
 
     glm::vec3 getPosition(float *vertices, int i);
 
@@ -90,6 +90,8 @@ public:
     
     void initTexture(const char *filename,GLuint shader);
    void initTextureGrey(const char *filename,GLuint shader);
+
+    void updateUniforms(GLuint shaderID);
 };
 
 #endif

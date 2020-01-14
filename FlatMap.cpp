@@ -11,7 +11,7 @@
 
 using namespace std;
 
-GLFWwindow *window;
+
 
 struct vertex {
     glm::vec3 position;
@@ -38,7 +38,7 @@ struct triangle {
 
 void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath) {
     // Open window
-    window = openWindow(windowName, screenWidth, screenHeight);
+    GLFWwindow* window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
     GLuint shaderID = LoadShaders("flatShader.vert", "flatShader.frag");
@@ -47,7 +47,6 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
     //const char *coloredTexturePath = "normal_earth_mini.jpg";
     //const char *greyTexturePath = "height_gray_mini.jpg";
     //setTexture(coloredTexturePath, greyTexturePath, shaderID);
-
     initTexture(coloredTexturePath,shaderID);
     initTextureGrey(greyTexturePath,shaderID);
  
@@ -92,7 +91,7 @@ void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath)
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(triangle), indices.data(), GL_STATIC_DRAW);
@@ -280,8 +279,6 @@ void FlatMap::handleKeyPress(GLFWwindow *window) {
 
 
 GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
-
-    GLFWwindow *window;
     if (!glfwInit()) {
         getchar();
         return 0;
@@ -292,8 +289,7 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    window = glfwCreateWindow(width, height, windowName, NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
 
     if (window == NULL) {
@@ -304,18 +300,16 @@ GLFWwindow *FlatMap::openWindow(const char *windowName, int width, int height) {
 
     glfwMakeContextCurrent(window);
 
-    glewExperimental = true; // Needed for core profile
+    glewExperimental = true;
     if (glewInit() != GLEW_OK) {
         getchar();
         glfwTerminate();
         return 0;
     }
 
-    // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glClearColor(0, 0,0, 0);
 
-    // Dark blue background
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     return window;
 }
 
@@ -390,23 +384,24 @@ void FlatMap::updateCamera(GLuint shaderID) {
     cameraPosition += speed * cameraDirection;
     
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(projectionAngle), aspectRatio, near, far);
+
     glm::mat4 viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
 
     glm::mat4 MVPMatrix = projectionMatrix * viewMatrix;
 
     glm::mat4 MVPMatrixNormal = inverseTranspose(viewMatrix);
 
-    GLint projectionMatrixId = glGetUniformLocation(shaderID, "ProjectionMatrix");
-    glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, &projectionMatrix[0][0]);
+GLint projectionMatrixId = glGetUniformLocation(shaderID, "ProjectionMatrix");
+glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-    GLint viewMatrixId = glGetUniformLocation(shaderID, "ViewMatrix");
-    glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, &viewMatrix[0][0]);
+GLint viewMatrixId = glGetUniformLocation(shaderID, "ViewMatrix");
+glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, &viewMatrix[0][0]);
 
-    GLint MVPMatrixId = glGetUniformLocation(shaderID, "MVP");
-    glUniformMatrix4fv(MVPMatrixId, 1, GL_FALSE, &MVPMatrix[0][0]);
+GLint MVPMatrixId = glGetUniformLocation(shaderID, "MVP");
+glUniformMatrix4fv(MVPMatrixId, 1, GL_FALSE, &MVPMatrix[0][0]);
 
-    GLint MVPMatrixNormalId = glGetUniformLocation(shaderID, "NormalMatrix");
-    glUniformMatrix4fv(MVPMatrixNormalId, 1, GL_FALSE, &MVPMatrixNormal[0][0]);
+GLint MVPMatrixNormalId = glGetUniformLocation(shaderID, "NormalMatrix");
+glUniformMatrix4fv(MVPMatrixNormalId, 1, GL_FALSE, &MVPMatrixNormal[0][0]);
 }
 
 void FlatMap::updateUniforms(GLuint shaderID){
@@ -422,7 +417,6 @@ void FlatMap::updateUniforms(GLuint shaderID){
 
     GLint imageWidthId = glGetUniformLocation(shaderID, "imageWidth");
     glUniform1f(imageWidthId, this->imageWidth);
-
 
     GLint imageHeightId = glGetUniformLocation(shaderID, "imageHeight");
     glUniform1f(imageHeightId, this->imageHeight);

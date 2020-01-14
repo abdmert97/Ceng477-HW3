@@ -56,8 +56,8 @@ public:
     float imageHeight;
     float imageWidth;
     float radius = 350;
-    int horizontalSplitCount = 250;
-    int verticalSplitCount = 125;
+    int sectorCount = 250;
+    int stackCount = 125;
 
     vector<float> interleavedVertices;
     vector<float> vertices;

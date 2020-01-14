@@ -1,5 +1,4 @@
 #include "SphereMap.h"
-
 using namespace std;
 
 struct vertex {
@@ -25,28 +24,33 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePath) {
+void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePath) {
     // Open window
-    GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
+    GLFWwindow* window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
     GLuint shaderID = LoadShaders("sphereShader.vert", "sphereShader.frag");
 
-    initTexture(coloredTexturePath, shaderID);
-    initTextureGrey(greyTexturePath, shaderID);
+    initTexture(coloredTexturePath,shaderID);
+    initTextureGrey(greyTexturePath,shaderID);
     setText(shaderID);
 //---------------------------------------
     // Set Vertices
-    for (int verticalStep = 0; verticalStep <= verticalSplitCount; ++verticalStep) {
-        float beta = PI * (verticalStep / verticalSplitCount);
-        float z = radius * cosf(beta);
+    for(int i = 0; i <= stackCount; ++i)
+    {
+        float stackAngle =i * PI / stackCount;        // starting from pi/2 to -pi/2
+        float xy = radius * sinf(stackAngle);             // r * cos(u)
+        float z = radius * cosf(stackAngle);              // r * sin(u)
 
-        for (int horizontalStep = 0; horizontalStep <= horizontalSplitCount; ++horizontalStep) {
-            float alpha = 2 * PI * (horizontalStep / horizontalSplitCount);
+        // add (sectorCount+1) vertices per stack
+        // the first and last vertices have same position and normal, but different tex coords
+        for(int j = 0; j <= sectorCount; ++j)
+        {
+            float sectorAngle = j * 2 *  PI / sectorCount;           // starting from 0 to 2pi
 
             // vertex position (x, y, z)
-            float y = radius * sinf(beta) * sinf(alpha);             // r * cos(u) * sin(v)
-            float x = radius * sinf(beta) * cosf(alpha);             // r * cos(u) * cos(v)
+           float x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
+           float y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
             vertices.push_back(x);
             vertices.push_back(y);
             vertices.push_back(z);
@@ -57,26 +61,30 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
             normals.push_back(z * (1 / radius));
 
             // vertex tex coord (s, t) range between [0, 1]
-            texCoords.push_back((float) horizontalStep / horizontalSplitCount);
-            texCoords.push_back((float) verticalStep / verticalSplitCount);
+            texCoords.push_back((float)j / sectorCount);
+            texCoords.push_back((float)i / stackCount);
         }
     }
 
-    for (int i = 0; i < verticalSplitCount; ++i) {
-        int k1 = i * (horizontalSplitCount + 1);     // beginning of current stack
-        int k2 = k1 + horizontalSplitCount + 1;      // beginning of next stack
+    for(int i = 0; i < stackCount; ++i)
+    {
+        int k1 = i * (sectorCount + 1);     // beginning of current stack
+        int k2 = k1 + sectorCount + 1;      // beginning of next stack
 
-        for (int j = 0; j < horizontalSplitCount; ++j, ++k1, ++k2) {
+        for(int j = 0; j < sectorCount; ++j, ++k1, ++k2)
+        {
             // 2 triangles per sector excluding first and last stacks
             // k1 => k2 => k1+1
-            if (i != 0) {
+            if(i != 0)
+            {
                 indices.push_back(k1);
                 indices.push_back(k2);
                 indices.push_back(k1 + 1);
             }
 
             // k1+1 => k2 => k2+1
-            if (i != (verticalSplitCount - 1)) {
+            if(i != (stackCount-1))
+            {
                 indices.push_back(k1 + 1);
                 indices.push_back(k2);
                 indices.push_back(k2 + 1);
@@ -87,17 +95,18 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
 
     std::size_t i, j;
     std::size_t count = vertices.size();
-    for (i = 0, j = 0; i < count; i += 3, j += 2) {
+    for(i = 0, j = 0; i < count; i += 3, j += 2)
+    {
         interleavedVertices.push_back(vertices[i]);
-        interleavedVertices.push_back(vertices[i + 1]);
-        interleavedVertices.push_back(vertices[i + 2]);
+        interleavedVertices.push_back(vertices[i+1]);
+        interleavedVertices.push_back(vertices[i+2]);
 
         interleavedVertices.push_back(normals[i]);
-        interleavedVertices.push_back(normals[i + 1]);
-        interleavedVertices.push_back(normals[i + 2]);
+        interleavedVertices.push_back(normals[i+1]);
+        interleavedVertices.push_back(normals[i+2]);
 
         interleavedVertices.push_back(texCoords[j]);
-        interleavedVertices.push_back(texCoords[j + 1]);
+        interleavedVertices.push_back(texCoords[j+1]);
     }
 //---------------------------------------
 
@@ -110,8 +119,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, interleavedVertices.size() * sizeof(float), interleavedVertices.data(),
-                 GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, interleavedVertices.size() * sizeof(float), interleavedVertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
 
@@ -157,12 +165,13 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
         glBindVertexArray(VAO);
 
         // Draw
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, 0);
 
         // Swap buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
-    } while (!glfwWindowShouldClose(window));
+    }
+    while (!glfwWindowShouldClose(window));
 
     // Delete buffers
     glDeleteBuffers(1, &VAO);
@@ -253,11 +262,11 @@ void SphereMap::handleKeyPress(GLFWwindow *window) {
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 //        cout << "Key Press: Q" << endl;
-        textureOffset -= 1.0 / horizontalSplitCount;
+        textureOffset -= 1.0/sectorCount;
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 //        cout << "Key Press: E" << endl;
-        textureOffset += 1.0 / horizontalSplitCount;
+        textureOffset += 1.0/sectorCount;
     }
 
     if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
@@ -306,7 +315,7 @@ GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    GLFWwindow *window = glfwCreateWindow(width, height, windowName, NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, windowName, NULL, NULL);
     glfwSetWindowMonitor(window, NULL, 1, 31, screenWidth, screenHeight, NULL);
 
     if (window == NULL) {
@@ -325,7 +334,7 @@ GLFWwindow *SphereMap::openWindow(const char *windowName, int width, int height)
     }
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0, 0,0, 0);
 
     return window;
 }
@@ -355,7 +364,7 @@ void SphereMap::updateCamera(GLuint shaderID) {
     glUniformMatrix4fv(MVPMatrixNormalId, 1, GL_FALSE, &MVPMatrixNormal[0][0]);
 }
 
-void SphereMap::updateUniforms(GLuint shaderID) {
+void SphereMap::updateUniforms(GLuint shaderID){
     GLint cameraPositionId = glGetUniformLocation(shaderID, "cameraPosition");
     glUniform3fv(cameraPositionId, 1, &cameraPosition[0]);
 
@@ -376,18 +385,19 @@ void SphereMap::updateUniforms(GLuint shaderID) {
     glUniform1f(textureOffsetId, this->textureOffset);
 }
 
-void SphereMap::setText(GLuint shader) {
+void SphereMap::setText(GLuint shader)
+{
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
+     glBindTexture(GL_TEXTURE_2D, textureGrey);
     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
     glUniform1i(glGetUniformLocation(shader, "TexColor"), 0);
     glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
 }
-
-void SphereMap::initTexture(const char *filename, GLuint shader) {
+ void SphereMap::initTexture(const char *filename,GLuint shader)
+{
     int width, height;
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
@@ -410,46 +420,48 @@ void SphereMap::initTexture(const char *filename, GLuint shader) {
     /* libjpeg data structure for storing one row, that is, scanline of an image */
     JSAMPROW row_pointer[1];
 
-    FILE *infile = fopen(filename, "rb");
+    FILE *infile = fopen( filename, "rb" );
     unsigned long location = 0;
     int i = 0, j = 0;
 
-    if (!infile) {
-        printf("Error opening jpeg file %s\n!", filename);
+    if ( !infile )
+    {
+        printf("Error opening jpeg file %s\n!", filename );
         return;
     }
-    printf("Texture filename = %s\n", filename);
+    printf("Texture filename = %s\n",filename);
 
     /* here we set up the standard libjpeg error handler */
-    cinfo.err = jpeg_std_error(&jerr);
+    cinfo.err = jpeg_std_error( &jerr );
     /* setup decompression process and source, then read JPEG header */
-    jpeg_create_decompress(&cinfo);
+    jpeg_create_decompress( &cinfo );
     /* this makes the library read from infile */
-    jpeg_stdio_src(&cinfo, infile);
+    jpeg_stdio_src( &cinfo, infile );
     /* reading the image header which contains image information */
-    jpeg_read_header(&cinfo, TRUE);
+    jpeg_read_header( &cinfo, TRUE );
     /* Start decompression jpeg here */
-    jpeg_start_decompress(&cinfo);
+    jpeg_start_decompress( &cinfo );
 
     /* allocate memory to hold the uncompressed image */
-    raw_image = (unsigned char *) malloc(cinfo.output_width * cinfo.output_height * cinfo.num_components);
+    raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
     /* now actually read the jpeg into the raw buffer */
-    row_pointer[0] = (unsigned char *) malloc(cinfo.output_width * cinfo.num_components);
+    row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
     /* read one scan line at a time */
-    while (cinfo.output_scanline < cinfo.image_height) {
-        jpeg_read_scanlines(&cinfo, row_pointer, 1);
-        for (i = 0; i < cinfo.image_width * cinfo.num_components; i++)
+    while( cinfo.output_scanline < cinfo.image_height )
+    {
+        jpeg_read_scanlines( &cinfo, row_pointer, 1 );
+        for( i=0; i<cinfo.image_width*cinfo.num_components;i++)
             raw_image[location++] = row_pointer[0][i];
     }
 
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureColor);
+    glGenTextures(1,&textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
+        // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                     GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -462,22 +474,23 @@ void SphereMap::initTexture(const char *filename, GLuint shader) {
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
+     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
 
     glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
     /* wrap up decompression, destroy objects, free pointers and close open files */
-    jpeg_finish_decompress(&cinfo);
-    jpeg_destroy_decompress(&cinfo);
-    free(row_pointer[0]);
-    free(raw_image);
-    fclose(infile);
+    jpeg_finish_decompress( &cinfo );
+    jpeg_destroy_decompress( &cinfo );
+    free( row_pointer[0] );
+    free( raw_image );
+    fclose( infile );
 
 }
 
-void SphereMap::initTextureGrey(const char *filename, GLuint shader) {
+void SphereMap::initTextureGrey(const char *filename,GLuint shader)
+{
 
-    glGenTextures(1, &textureGrey);
+     glGenTextures(1, &textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
@@ -499,46 +512,48 @@ void SphereMap::initTextureGrey(const char *filename, GLuint shader) {
     /* libjpeg data structure for storing one row, that is, scanline of an image */
     JSAMPROW row_pointer[1];
 
-    FILE *infile = fopen(filename, "rb");
+    FILE *infile = fopen( filename, "rb" );
     unsigned long location = 0;
     int i = 0, j = 0;
 
-    if (!infile) {
-        printf("Error opening jpeg file %s\n!", filename);
+    if ( !infile )
+    {
+        printf("Error opening jpeg file %s\n!", filename );
         return;
     }
-    printf("Texture filename = %s\n", filename);
+    printf("Texture filename = %s\n",filename);
 
     /* here we set up the standard libjpeg error handler */
-    cinfo.err = jpeg_std_error(&jerr);
+    cinfo.err = jpeg_std_error( &jerr );
     /* setup decompression process and source, then read JPEG header */
-    jpeg_create_decompress(&cinfo);
+    jpeg_create_decompress( &cinfo );
     /* this makes the library read from infile */
-    jpeg_stdio_src(&cinfo, infile);
+    jpeg_stdio_src( &cinfo, infile );
     /* reading the image header which contains image information */
-    jpeg_read_header(&cinfo, TRUE);
+    jpeg_read_header( &cinfo, TRUE );
     /* Start decompression jpeg here */
-    jpeg_start_decompress(&cinfo);
+    jpeg_start_decompress( &cinfo );
 
     /* allocate memory to hold the uncompressed image */
-    raw_image = (unsigned char *) malloc(cinfo.output_width * cinfo.output_height * cinfo.num_components);
+    raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
     /* now actually read the jpeg into the raw buffer */
-    row_pointer[0] = (unsigned char *) malloc(cinfo.output_width * cinfo.num_components);
+    row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
     /* read one scan line at a time */
-    while (cinfo.output_scanline < cinfo.image_height) {
-        jpeg_read_scanlines(&cinfo, row_pointer, 1);
-        for (i = 0; i < cinfo.image_width * cinfo.num_components; i++)
+    while( cinfo.output_scanline < cinfo.image_height )
+    {
+        jpeg_read_scanlines( &cinfo, row_pointer, 1 );
+        for( i=0; i<cinfo.image_width*cinfo.num_components;i++)
             raw_image[location++] = row_pointer[0][i];
     }
 
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureGrey);
+    glGenTextures(1,&textureGrey);
     glBindTexture(GL_TEXTURE_2D, textureGrey);
     glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
+        // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
                     GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -551,16 +566,16 @@ void SphereMap::initTextureGrey(const char *filename, GLuint shader) {
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
+     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
 
     glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
     /* wrap up decompression, destroy objects, free pointers and close open files */
-    jpeg_finish_decompress(&cinfo);
-    jpeg_destroy_decompress(&cinfo);
-    free(row_pointer[0]);
-    free(raw_image);
-    fclose(infile);
+    jpeg_finish_decompress( &cinfo );
+    jpeg_destroy_decompress( &cinfo );
+    free( row_pointer[0] );
+    free( raw_image );
+    fclose( infile );
 
 }
 

@@ -4,12 +4,13 @@
 #include <vector>
 #include <GL/glew.h>
 #include <iostream>
-#include <glm/ext.hpp>
+#include "glm/glm/ext.hpp"
 #include "Shader.hpp"
 #include <vector>
-#include <glm/glm.hpp>
+#include "glm/glm/glm.hpp"
 #include <GLFW/glfw3.h>
-
+#include <jpeglib.h>
+#include <GL/glew.h>
 #define PI 3.14159265359
 using namespace std;
 
@@ -18,7 +19,7 @@ class SphereMap {
 private:
     float heightFactor = 0;
     float textureOffset = 0;
-    glm::vec3 lightPos;
+   
     bool pKeyPressed = false;
     // DISPLAY SETTINGS
     enum displayFormatOptions {
@@ -44,6 +45,7 @@ private:
     glm::vec3 cameraStartPosition = glm::vec3(0, 600, 0);
     glm::vec3 cameraStartDirection = glm::vec3(0, -1,0);
     glm::vec3 cameraStartUp = glm::vec3(0, 0, 1);
+     glm::vec3 lightPos = glm::vec3(0, 1600, 0);
     glm::vec3 cameraUp = cameraStartUp;
     glm::vec3 cameraPosition = cameraStartPosition;
     glm::vec3 cameraDirection = cameraStartDirection;
@@ -83,6 +85,11 @@ public:
     void setCameraDirection();
 
     void printVec3(glm::vec3 vec);
+
+    void setText(GLuint shader);
+    
+    void initTexture(const char *filename,GLuint shader);
+   void initTextureGrey(const char *filename,GLuint shader);
 };
 
 #endif

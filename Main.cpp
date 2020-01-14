@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "FlatMap.h"
+#include "SphereMap.h"
 using namespace std;
 
 
 int main(int argc, char* argv[])
 {
-    FlatMap *openGL = new FlatMap();
+    SphereMap *openGL = new SphereMap();
 	openGL->Render();
 	
 }

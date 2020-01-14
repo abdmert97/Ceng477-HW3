@@ -4,11 +4,13 @@
 #include <vector>
 #include <GL/glew.h>
 #include <iostream>
-#include <glm/ext.hpp>
+#include "glm/glm/ext.hpp"
 #include "Shader.hpp"
 #include <vector>
-#include <glm/glm.hpp>
+#include "glm/glm/glm.hpp"
 #include <GLFW/glfw3.h>
+#include <jpeglib.h>
+#include <GL/glew.h>
 
 
 using namespace std;
@@ -57,7 +59,6 @@ public:
 
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 
-    // void drawTriangle(float* vertices, unsigned int* indices);
     void setTexture(const char *filenameColored, const char *filenameGray, GLuint shaderID);
 
     void Render();
@@ -77,6 +78,11 @@ public:
     void printVec3(glm::vec3 vec);
 
     void updateUniforms(GLuint shaderID);
+
+    void setText(GLuint shader);
+    
+   void initTexture(const char *filename,GLuint shader);
+   void initTextureGrey(const char *filename,GLuint shader);
 };
 
 #endif

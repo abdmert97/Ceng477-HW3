@@ -30,7 +30,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
-    GLuint shaderID = initShaders();
+    GLuint shaderID = initShaders("sphereShader.vert", "sphereShader.frag");
 
     initColoredTexture(coloredTexturePath, shaderID);
     initGreyTexture(greyTexturePath, shaderID);
@@ -62,7 +62,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
         }
     }
 
-    for (int i = 0; i < verticalSplitCount - 1; i++) {
+    for (int i = 0; i < verticalSplitCount; i++) {
         int offset = 0;
         for (int j = 0; j < horizontalSplitCount; j++) {
             if (i != 0) {
@@ -70,7 +70,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
                 indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
                 indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
             }
-            if (i != verticalSplitCount - 2) {
+            if (i != verticalSplitCount - 1) {
                 indices.push_back(i * (horizontalSplitCount + 1) + 1 + offset);
                 indices.push_back((i + 1) * (horizontalSplitCount + 1) + offset);
                 indices.push_back((i + 1) * (horizontalSplitCount + 1) + 1 + offset);
@@ -409,17 +409,9 @@ void SphereMap::initColoredTexture(const char *filename, GLuint shader) {
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureColor);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    glActiveTexture(GL_TEXTURE0);
+
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   
 
     imageWidth = width;
     imageHeight = height;
@@ -429,7 +421,7 @@ void SphereMap::initColoredTexture(const char *filename, GLuint shader) {
     glUseProgram(shader); // don't forget to activate/use the shader before setting uniforms!
     // either set it manually like so:
 
-    glUniform1i(glGetUniformLocation(shader, "TexGrey"), 1);
+    glUniform1i(glGetUniformLocation(shader, "TexColor"), 0);
     /* wrap up decompression, destroy objects, free pointers and close open files */
     jpeg_finish_decompress(&cinfo);
     jpeg_destroy_decompress(&cinfo);
@@ -498,20 +490,10 @@ void SphereMap::initGreyTexture(const char *filename, GLuint shader) {
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureGrey);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
-    glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  
 
-    imageWidth = width;
-    imageHeight = height;
+
 
     glGenerateMipmap(GL_TEXTURE_2D);
 

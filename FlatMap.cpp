@@ -30,7 +30,7 @@ void FlatMap::Render(const char *coloredTexturePath, const char *greyTexturePath
     GLFWwindow *window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
-    GLuint shaderID = initShaders();
+    GLuint shaderID = initShaders("flatShader.vert", "flatShader.frag");
 
     // Set Texture
     initColoredTexture(coloredTexturePath, shaderID);
@@ -55,18 +55,17 @@ void FlatMap::Render(const char *coloredTexturePath, const char *greyTexturePath
     int currentIndex = 0;
     for (int i = 0; i < imageHeight - 1; i++) {
         for (int j = 0; j < imageWidth - 1; j++) {
-            if (i != 0) {
+           
                 indices[currentIndex].vertex1 = i * imageWidth + j;
                 indices[currentIndex].vertex2 = i * imageWidth + j + 1;
                 indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
                 currentIndex++;
-            }
-            if (i != imageHeight - 2) {
+            
                 indices[currentIndex].vertex1 = i * imageWidth + j + 1;
                 indices[currentIndex].vertex2 = i * imageWidth + imageWidth + j + 1;
                 indices[currentIndex].vertex3 = i * imageWidth + imageWidth + j;
                 currentIndex++;
-            }
+            
         }
     }
 
@@ -351,8 +350,7 @@ void FlatMap::initColoredTexture(const char *filename, GLuint shader) {
     glGenTextures(1, &textureColor);
     glBindTexture(GL_TEXTURE_2D, textureColor);
     // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -404,17 +402,7 @@ void FlatMap::initColoredTexture(const char *filename, GLuint shader) {
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureColor);
-    glBindTexture(GL_TEXTURE_2D, textureColor);
-    glActiveTexture(GL_TEXTURE0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     imageWidth = width;
     imageHeight = height;
@@ -495,20 +483,10 @@ void FlatMap::initGreyTexture(const char *filename, GLuint shader) {
     height = cinfo.image_height;
     width = cinfo.image_width;
 
-    glGenTextures(1, &textureGrey);
-    glBindTexture(GL_TEXTURE_2D, textureGrey);
-    glActiveTexture(GL_TEXTURE0);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                    GL_CLAMP_TO_EDGE);    // set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    imageWidth = width;
-    imageHeight = height;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, raw_image);
+
+
 
     glGenerateMipmap(GL_TEXTURE_2D);
 

@@ -14,12 +14,12 @@ using namespace std;
 
 #include "Shader.h"
 
-GLuint initShaders() {
+GLuint initShaders(const string& vertexShaderName, const string& fragmentShaderName) {
 
   GLuint idProgramShader = glCreateProgram();
 
-  GLuint idVertexShader   = initVertexShader("sphereShader.vert");
-  GLuint idFragmentShader = initFragmentShader("sphereShader.frag");
+  GLuint idVertexShader   = initVertexShader(vertexShaderName);
+  GLuint idFragmentShader = initFragmentShader(fragmentShaderName);
 
   glAttachShader(idProgramShader, idVertexShader);
   glAttachShader(idProgramShader, idFragmentShader);

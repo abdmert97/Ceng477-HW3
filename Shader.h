@@ -9,7 +9,7 @@ using namespace std;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-GLuint initShaders();
+GLuint initShaders(const string& vertexShaderName, const string& fragmentShaderName);
 
 GLuint initVertexShader(const string& filename);
 

@@ -237,8 +237,6 @@ void FlatMap::handleKeyPress(GLFWwindow *window) {
         cameraPosition = cameraStartPosition;
         cameraDirection = cameraStartDirection;
         cameraUp = cameraStartUp;
-        pitch = startPitch;
-        yaw = startYaw;
         speed = startSpeed;
     }
 

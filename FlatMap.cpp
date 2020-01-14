@@ -36,7 +36,7 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void FlatMap::Render() {
+void FlatMap::Render(const char *coloredTexturePath,const char *greyTexturePath) {
     // Open window
     window = openWindow(windowName, screenWidth, screenHeight);
 
@@ -44,8 +44,8 @@ void FlatMap::Render() {
     GLuint shaderID = LoadShaders("flatShader.vert", "flatShader.frag");
 
     // Set Texture
-    const char *coloredTexturePath = "normal_earth_mini.jpg";
-    const char *greyTexturePath = "height_gray_mini.jpg";
+    //const char *coloredTexturePath = "normal_earth_mini.jpg";
+    //const char *greyTexturePath = "height_gray_mini.jpg";
     //setTexture(coloredTexturePath, greyTexturePath, shaderID);
 
     initTexture(coloredTexturePath,shaderID);

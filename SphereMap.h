@@ -70,7 +70,7 @@ public:
     // void drawTriangle(float* vertices, unsigned int* indices);
     void setTexture(const char *filenameColored,const char *filenameGray, GLuint shaderID);
 
-    void Render();
+    void Render(const char *coloredTexturePath,const char *greyTexturePath);
 
     static glm::vec3 calculateNormal(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 

@@ -28,16 +28,13 @@ struct triangle {
                                                                            vertex3(vertex3) {}
 };
 
-void SphereMap::Render() {
+void SphereMap::Render(const char *coloredTexturePath,const char *greyTexturePath) {
     // Open window
     GLFWwindow* window = openWindow(windowName, screenWidth, screenHeight);
 
     // Load shaders
     GLuint shaderID = LoadShaders("sphereShader.vert", "sphereShader.frag");
 
-    // Set Texture
-    const char *coloredTexturePath = "normal_earth_med.jpg";
-    const char *greyTexturePath = "height_gray_med.jpg";
     initTexture(coloredTexturePath,shaderID);
     initTextureGrey(greyTexturePath,shaderID);
     setText(shaderID);

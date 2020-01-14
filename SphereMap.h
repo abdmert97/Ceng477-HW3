@@ -59,10 +59,7 @@ public:
     int horizontalSplitCount = 250;
     int verticalSplitCount = 125;
 
-    vector<float> interleavedVertices;
     vector<float> vertices;
-    vector<float> normals;
-    vector<float> texCoords;
     vector<unsigned int> indices;
     GLFWwindow *openWindow(const char *windowName, int width, int height);
 

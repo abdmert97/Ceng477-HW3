@@ -35,69 +35,54 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
     initTexture(coloredTexturePath, shaderID);
     initTextureGrey(greyTexturePath, shaderID);
     setText(shaderID);
-//---------------------------------------
+
     // Set Vertices
-    for (int verticalStep = 0; verticalStep <= verticalSplitCount; ++verticalStep) {
+    for (int verticalStep = 0; verticalStep <= verticalSplitCount; verticalStep++) {
+
         float stackAngle = PI * (float) verticalStep / verticalSplitCount;
 
-        for (int horizontalStep = 0; horizontalStep <= horizontalSplitCount; ++horizontalStep) {
+        for (int horizontalStep = 0; horizontalStep <= horizontalSplitCount; horizontalStep++) {
+
             float sectorAngle = 2 * PI * (float) horizontalStep / horizontalSplitCount;
 
             float x = radius * sinf(stackAngle) * cosf(sectorAngle);
-            interleavedVertices.push_back(x);
+            vertices.push_back(x);
+
             float y = radius * sinf(stackAngle) * sinf(sectorAngle);
-            interleavedVertices.push_back(y);
+            vertices.push_back(y);
+
             float z = radius * cosf(stackAngle);
-            interleavedVertices.push_back(z);
-            interleavedVertices.push_back(y * (1 / radius));
-            interleavedVertices.push_back(x * (1 / radius));
-            interleavedVertices.push_back(z * (1 / radius));
+            vertices.push_back(z);
 
+            vertices.push_back(x * (1 / radius));
+            vertices.push_back(y * (1 / radius));
+            vertices.push_back(z * (1 / radius));
 
-
-            interleavedVertices.push_back((float) horizontalStep / horizontalSplitCount);
-            interleavedVertices.push_back((float) verticalStep / verticalSplitCount);
+            vertices.push_back((float) horizontalStep / horizontalSplitCount);
+            vertices.push_back((float) verticalStep / verticalSplitCount);
         }
     }
 
-    for (int i = 0; i < verticalSplitCount; ++i) {
-        int k1 = i * (horizontalSplitCount + 1);     // beginning of current stack
-        int k2 = k1 + horizontalSplitCount + 1;      // beginning of next stack
+    for (int i = 0; i < verticalSplitCount; i++) {
+        int c=0;
 
-        for (int j = 0; j < horizontalSplitCount; ++j, ++k1, ++k2) {
+        for (int j = 0; j < horizontalSplitCount; j++, c++) {
             // 2 triangles per sector excluding first and last stacks
             // k1 => k2 => k1+1
             if (i != 0) {
-                indices.push_back(k1);
-                indices.push_back(k2);
-                indices.push_back(k1 + 1);
+                indices.push_back(i * (horizontalSplitCount + 1)+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1)+c);
+                indices.push_back(i * (horizontalSplitCount + 1) + 1+c);
             }
 
             // k1+1 => k2 => k2+1
             if (i != (verticalSplitCount - 1)) {
-                indices.push_back(k1 + 1);
-                indices.push_back(k2);
-                indices.push_back(k2 + 1);
+                indices.push_back(i * (horizontalSplitCount + 1) + 1+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1)+c);
+                indices.push_back((i+1) * (horizontalSplitCount + 1) + 1+c);
             }
         }
     }
-//
-//    std::size_t i, j;
-//    std::size_t count = vertices.size();
-//    for (int i = 0, j = 0; i < count; i += 3, j += 2) {
-//        interleavedVertices.push_back(vertices[i + 2]);
-//        interleavedVertices.push_back(vertices[i + 1]);
-//        interleavedVertices.push_back(vertices[i]);
-//
-//        interleavedVertices.push_back(normals[i + 2]);
-//        interleavedVertices.push_back(normals[i + 1]);
-//        interleavedVertices.push_back(normals[i]);
-//
-//        interleavedVertices.push_back(texCoords[j]);
-//        interleavedVertices.push_back(texCoords[j + 1]);
-//    }
-//---------------------------------------
-
 
 
     // Configure Buffers
@@ -107,7 +92,7 @@ void SphereMap::Render(const char *coloredTexturePath, const char *greyTexturePa
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, interleavedVertices.size() * sizeof(float), interleavedVertices.data(),
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(),
                  GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
